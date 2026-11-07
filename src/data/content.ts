@@ -26,14 +26,16 @@ export const personalInfo = {
     es: 'Ingeniero Full Stack en SYSNET',
   },
   availability: {
-    en: 'Remote contract roles · B2B · USD',
-    es: 'Contratos remotos · B2B · USD',
+    en: 'Remote roles · B2B · USD or COP · Colombian companies too',
+    es: 'Roles remotos · B2B · USD o COP · también empresas colombianas',
   },
   english: {
     en: 'B2+ · overlaps US Eastern hours',
     es: 'B2+ · coincide con el horario del Este de EE. UU.',
   },
   email: 'ivandex16@gmail.com',
+  phone: '+57 321 881 6736',
+  whatsapp: 'https://wa.me/573218816736',
   linkedin: 'https://www.linkedin.com/in/ivancbgz/',
   github: 'https://github.com/ivandex16',
   resumePath: '/resume.pdf',
@@ -226,32 +228,32 @@ export const techStackData: TechCategory[] = [
   {
     title: { en: 'Core', es: 'Base' },
     note: { en: 'What I write every day', es: 'Lo que uso a diario' },
-    skills: ['TypeScript', 'Node.js', 'NestJS', 'React', 'PostgreSQL', 'SQL Server'],
+    skills: ['TypeScript', 'JavaScript', 'React', 'Next.js', 'Node.js', 'NestJS', 'PostgreSQL', 'SQL Server', 'MongoDB', 'Docker'],
   },
   {
     title: { en: 'Backend and data', es: 'Backend y datos' },
     note: { en: 'APIs, storage, auth', es: 'APIs, almacenamiento, autenticación' },
-    skills: ['Express', 'REST API design', 'GraphQL', 'JWT and granular RBAC', 'Stored procedures', 'ACID transactions', 'Schema design and indexing', 'Redis', 'MongoDB', 'MySQL', 'OpenAPI / Swagger'],
+    skills: ['Express', 'REST API design', 'GraphQL', 'Microservices', 'JWT and granular RBAC', 'Input sanitization', 'Stored procedures', 'ACID transactions', 'Schema design and indexing', 'Schema migrations', 'Redis', 'MySQL', 'OpenAPI / Swagger'],
   },
   {
     title: { en: 'Frontend', es: 'Frontend' },
     note: { en: 'Interfaces for the APIs above', es: 'Interfaces para esas APIs' },
-    skills: ['Next.js (App Router, SSR / SSG)', 'Redux Toolkit', 'Custom hooks and dynamic forms', 'Tailwind CSS', 'Accessibility (WCAG)'],
+    skills: ['App Router, SSR / SSG', 'Redux Toolkit', 'Context API', 'Custom hooks and dynamic forms', 'Tailwind CSS', 'Responsive UI', 'Accessibility (WCAG)'],
   },
   {
     title: { en: 'AI integration', es: 'Integración de IA' },
     note: { en: 'LLMs inside real features', es: 'LLMs dentro de funciones reales' },
-    skills: ['Google Gemini API', 'OpenAI API', 'Structured JSON output', 'Prompt engineering'],
+    skills: ['Google Gemini API', 'OpenAI API', 'Structured JSON output', 'Prompt engineering', 'AI-assisted coding (Codex, Claude Code)'],
   },
   {
     title: { en: 'Cloud and delivery', es: 'Cloud y entrega' },
     note: { en: 'Getting it to production', es: 'Llevarlo a producción' },
-    skills: ['AWS (EC2, S3, IAM, VPC)', 'Docker', 'GitHub Actions', 'Git', 'Linux'],
+    skills: ['AWS (EC2, S3, IAM, VPC)', 'GitHub Actions (CI/CD)', 'Git', 'Linux'],
   },
   {
     title: { en: 'Practice', es: 'Práctica' },
     note: { en: 'How I keep it maintainable', es: 'Cómo lo mantengo mantenible' },
-    skills: ['Jest', 'React Testing Library', 'Clean Architecture', 'SOLID', 'Microservices', 'Code reviews', 'Scrum'],
+    skills: ['Jest', 'React Testing Library', 'Clean Architecture', 'SOLID', 'Code reviews', 'Scrum'],
   },
 ];
 

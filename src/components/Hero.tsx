@@ -60,6 +60,27 @@ export const Hero: React.FC = () => {
           aria-label={en ? 'At a glance' : 'En resumen'}
           className="col-span-4 self-end md:col-span-8 lg:col-span-5 lg:col-start-8 xl:col-span-4 xl:col-start-9"
         >
+          {/* Portrait: B&W so it sits with the palette; 4:5, ~8–15 KB WebP with JPEG fallback */}
+          <figure className="mb-8 w-48 animate-fade-up overflow-hidden bg-surface [animation-delay:300ms] sm:w-56">
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/images/ivan-cabeza-480.webp 480w, /images/ivan-cabeza-800.webp 800w"
+                sizes="(min-width: 640px) 224px, 192px"
+              />
+              <img
+                src="/images/ivan-cabeza-480.jpg"
+                srcSet="/images/ivan-cabeza-480.jpg 480w, /images/ivan-cabeza-800.jpg 800w"
+                sizes="(min-width: 640px) 224px, 192px"
+                width={480}
+                height={600}
+                alt={en ? 'Portrait of Ivan Cabeza' : 'Retrato de Iván Cabeza'}
+                {...{ fetchpriority: 'high' } /* React 18 only accepts the lowercase DOM attribute */}
+                decoding="async"
+                className="block h-auto w-full"
+              />
+            </picture>
+          </figure>
           <p className="label flex animate-fade-up items-center gap-2 border-b border-ink pb-3 text-ink [animation-delay:420ms]">
             <span aria-hidden="true" className="h-2 w-2 animate-blink bg-accent" />
             {en ? 'Available for new work' : 'Disponible para nuevos proyectos'}

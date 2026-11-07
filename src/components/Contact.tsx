@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { personalInfo } from '../data/content';
-import { Copy, Check } from './Icons';
+import { Copy, Check, WhatsApp } from './Icons';
 import { Reveal } from './Reveal';
 
 export const Contact: React.FC = () => {
@@ -23,7 +23,13 @@ export const Contact: React.FC = () => {
     }
   };
 
+  const waText = encodeURIComponent(
+    en ? 'Hi Ivan, I saw your portfolio and would like to talk about a role.' : 'Hola Iván, vi tu portafolio y me gustaría hablar sobre una oportunidad.'
+  );
+  const whatsappHref = `${personalInfo.whatsapp}?text=${waText}`;
+
   const channels = [
+    { label: 'WhatsApp', href: whatsappHref, text: personalInfo.phone, external: true },
     { label: 'LinkedIn', href: personalInfo.linkedin, text: 'in/ivancbgz', external: true },
     { label: 'GitHub', href: personalInfo.github, text: 'github.com/ivandex16', external: true },
     { label: 'CV', href: personalInfo.resumePath, text: en ? 'Download PDF' : 'Descargar PDF', download: 'Ivan-Cabeza-CV.pdf' },
@@ -45,8 +51,8 @@ export const Contact: React.FC = () => {
             </h2>
             <p className="mt-6 max-w-prose text-lead text-muted">
               {en
-                ? 'I work as a contractor (B2B, invoiced in USD) with full-time remote teams. My working hours overlap US Eastern time.'
-                : 'Trabajo como contractor (B2B, facturando en USD) con equipos remotos a tiempo completo. Mi horario coincide con el Este de EE. UU.'}
+                ? 'I work full time with remote teams as a contractor (B2B, invoiced in USD or COP), and I am also open to roles at Colombian companies. My working hours overlap US Eastern time.'
+                : 'Trabajo a tiempo completo con equipos remotos como contractor (B2B, facturando en USD o COP), y también estoy abierto a empresas colombianas. Mi horario coincide con el Este de EE. UU.'}
             </p>
 
             <div className="mt-12 flex flex-wrap items-center gap-x-5 gap-y-4">
@@ -65,6 +71,17 @@ export const Contact: React.FC = () => {
                 <span aria-live="polite">{copied ? (en ? 'Copied' : 'Copiado') : en ? 'Copy' : 'Copiar'}</span>
               </button>
             </div>
+
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-6 inline-flex min-h-12 items-center gap-3 border border-rule px-4 text-body font-medium text-ink transition-colors hover:border-[#25D366]"
+            >
+              <WhatsApp className="h-5 w-5 text-[#25D366]" aria-hidden="true" />
+              {en ? 'Message me on WhatsApp' : 'Escríbeme por WhatsApp'}
+              <span aria-hidden="true" className="nudge nudge-right text-muted">↗</span>
+            </a>
           </Reveal>
 
           <Reveal as="dl" delay={150} className="col-span-4 self-end md:col-span-8 lg:col-span-4 lg:col-start-9">

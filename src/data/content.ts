@@ -3,7 +3,7 @@ import { Project, ExperienceItem, TechCategory } from '../types';
 /*
   Metric placement rule: every number appears in exactly ONE place.
   - Hero:        4+ years
-  - Experience:  >25% latency cut, >80% test coverage, 100K+ records
+  - Experience:  70% fewer re-renders, >80% test coverage
   - Procurement: ~1200ms → <300ms
 */
 
@@ -15,8 +15,8 @@ export const personalInfo = {
     es: 'Ingeniero full stack, con foco en backend.',
   },
   intro: {
-    en: 'I build APIs, transactional data layers and the Next.js interfaces that sit on top of them, in TypeScript with NestJS, PostgreSQL and SQL Server. Most recently: hospital procurement and inventory software at SYSNET.',
-    es: 'Construyo APIs, capas de datos transaccionales y las interfaces en Next.js que las usan, en TypeScript con NestJS, PostgreSQL y SQL Server. Lo más reciente: software de compras e inventario hospitalario en SYSNET.',
+    en: 'I build APIs, transactional data layers and the React interfaces that sit on top of them, in TypeScript with NestJS, PostgreSQL and SQL Server. At SYSNET that means healthcare software: procurement and inventory, appointment scheduling and clinical records.',
+    es: 'Construyo APIs, capas de datos transaccionales y las interfaces en React que las usan, en TypeScript con NestJS, PostgreSQL y SQL Server. En SYSNET eso es software de salud: compras e inventario, agendamiento de citas e historias clínicas.',
   },
   location: 'Cartagena, Colombia',
   timezone: 'UTC−5',
@@ -34,7 +34,7 @@ export const personalInfo = {
     es: 'B2+ · coincide con el horario del Este de EE. UU.',
   },
   email: 'ivandex16@gmail.com',
-  linkedin: 'https://linkedin.com/in/ivancbgz',
+  linkedin: 'https://www.linkedin.com/in/ivancbgz/',
   github: 'https://github.com/ivandex16',
   resumePath: '/resume.pdf',
 };
@@ -55,15 +55,15 @@ export const experienceData: ExperienceItem[] = [
       es: 'Mar 2022 – presente',
     },
     summary: {
-      en: 'Full-stack work on business systems, from schema and API design to the React screens, where a lost write shows up as a stock or accounting error.',
-      es: 'Trabajo full stack en sistemas de negocio, desde el esquema y la API hasta las pantallas en React, donde una escritura perdida aparece como un error de stock o contable.',
+      en: 'Full-stack work on healthcare business software, from schemas and stored procedures to the React screens. In procurement and clinical records a lost write is a real error, so data integrity comes first.',
+      es: 'Trabajo full stack en software de salud, desde esquemas y procedimientos almacenados hasta las pantallas en React. En compras e historias clínicas una escritura perdida es un error real, así que la integridad de los datos va primero.',
     },
     highlights: [
       {
-        value: '>25%',
+        value: '70%',
         label: {
-          en: 'lower latency on critical endpoints, from Redis caching and query indexing',
-          es: 'menos latencia en endpoints críticos, con caché en Redis e indexación de consultas',
+          en: 'fewer re-renders in high-volume data-entry forms, with a custom useForm hook, React.memo and useCallback',
+          es: 'menos re-renders en formularios de captura masiva, con un hook useForm propio, React.memo y useCallback',
         },
       },
       {
@@ -73,31 +73,24 @@ export const experienceData: ExperienceItem[] = [
           es: 'de cobertura unitaria y de integración, sostenida con Jest y React Testing Library',
         },
       },
-      {
-        value: '100K+',
-        label: {
-          en: 'records per dataset in SQL Server and MongoDB schemas I modeled and tuned',
-          es: 'registros por conjunto de datos en esquemas de SQL Server y MongoDB que modelé y optimicé',
-        },
-      },
     ],
     achievements: {
       en: [
-        'Led the architecture of modular web applications and microservices in NestJS, Node.js and React.',
-        'Designed REST and GraphQL APIs secured with JWT and role-based access control.',
-        'Applied indexing, cursor pagination and ACID transaction isolation to keep those datasets fast and consistent.',
-        'Improved Core Web Vitals with Next.js SSR/SSG, code splitting and memoization.',
-        'Built CI/CD with GitHub Actions and Docker, keeping development and production on AWS in parity.',
+        'Built and deployed an internal Node.js REST API on top of the existing SIOS healthcare database, so client web portals and WhatsApp chatbots can book appointments and check schedules in real time.',
+        'Worked on the front end and back end of the procurement and inbound inventory system (React, TypeScript, Node.js/NestJS): purchase-order workflows, dynamic tax calculation and atomic stock updates.',
+        'Designed schemas, indexes and stored procedures in PostgreSQL and SQL Server, with strict ACID transactions on inventory tables so stock counts no longer drift.',
+        'Supported clinical records modules in production: wrote and refactored stored procedures and carried new clinical fields and validation rules through patient templates.',
+        'Kept development and production environments consistent with Docker and CI/CD pipelines, in a Scrum team.',
       ],
       es: [
-        'Lideré la arquitectura de aplicaciones web modulares y microservicios en NestJS, Node.js y React.',
-        'Diseñé APIs REST y GraphQL protegidas con JWT y control de acceso por roles.',
-        'Apliqué indexación, paginación por cursor y aislamiento de transacciones ACID para mantener esos datos rápidos y consistentes.',
-        'Mejoré los Core Web Vitals con SSR/SSG de Next.js, división de código y memoización.',
-        'Monté CI/CD con GitHub Actions y Docker, con paridad entre desarrollo y producción en AWS.',
+        'Construí y desplegué una API REST interna en Node.js sobre la base de datos de salud SIOS, para que portales web de clientes y chatbots de WhatsApp agenden citas y consulten horarios en tiempo real.',
+        'Trabajé en el front end y el back end del sistema de compras e ingreso de inventario (React, TypeScript, Node.js/NestJS): flujos de órdenes de compra, cálculo dinámico de impuestos y actualizaciones de stock atómicas.',
+        'Diseñé esquemas, índices y procedimientos almacenados en PostgreSQL y SQL Server, con transacciones ACID estrictas en las tablas de inventario para que el stock deje de descuadrarse.',
+        'Di soporte en producción a los módulos de historias clínicas: escribí y refactoricé procedimientos almacenados y llevé nuevos campos clínicos y reglas de validación a las plantillas de pacientes.',
+        'Mantuve entornos de desarrollo y producción consistentes con Docker y pipelines de CI/CD, en un equipo Scrum.',
       ],
     },
-    tech: ['TypeScript', 'NestJS', 'Node.js', 'React', 'Next.js', 'PostgreSQL', 'SQL Server', 'MongoDB', 'Redis', 'GraphQL', 'Docker', 'AWS', 'Jest'],
+    tech: ['TypeScript', 'React', 'Node.js', 'NestJS', 'Express', 'PostgreSQL', 'SQL Server', 'Stored procedures', 'Docker', 'Jest', 'React Testing Library'],
   },
 ];
 
@@ -110,8 +103,8 @@ export const projectsData: Project[] = [
       es: 'Logística hospitalaria · SYSNET · código bajo NDA',
     },
     role: {
-      en: 'Full stack engineer: schema, transaction layer and entry UI',
-      es: 'Ingeniero full stack: esquema, capa transaccional e interfaz de captura',
+      en: 'Full-stack engineer on the team: purchase orders, tax calculation, stock updates and the entry forms',
+      es: 'Ingeniero full stack del equipo: órdenes de compra, cálculo de impuestos, actualización de stock y formularios de captura',
     },
     problem: {
       en: 'When several large supplier invoices were entered at once, hospital purchasing and warehouse intake hit concurrency bottlenecks. Stock counts drifted and financial reconciliation ran late.',
@@ -175,8 +168,8 @@ export const projectsData: Project[] = [
       es: 'Las sugerencias de rutina no pueden depender solo de un LLM. El modelo puede no estar configurado, fallar o responder con texto que no es JSON válido, y el usuario igual espera su plan de la semana.',
     },
     solution: {
-      en: 'An Express and MongoDB API with a three-tier recommendation engine: rule-based matching by goal, a scoring engine built on the user’s own workout history, and Gemini for full weekly routines. The React client logs workouts with a live timer, tracks progress and ships to Android with Capacitor.',
-      es: 'Una API en Express y MongoDB con un motor de recomendaciones de tres niveles: reglas según el objetivo, un motor de puntuación basado en el historial de entrenos del usuario y Gemini para rutinas semanales completas. El cliente React registra entrenos con temporizador, muestra el progreso y se empaqueta para Android con Capacitor.',
+      en: 'An Express and MongoDB API with a three-tier recommendation engine: rule-based matching by goal, a scoring engine built on the user’s own workout history, and Gemini for full weekly routines and healthy recipe suggestions. The React client logs workouts with a live timer, tracks progress and ships to Android with Capacitor.',
+      es: 'Una API en Express y MongoDB con un motor de recomendaciones de tres niveles: reglas según el objetivo, un motor de puntuación basado en el historial de entrenos del usuario y Gemini para rutinas semanales completas y sugerencias de recetas saludables. El cliente React registra entrenos con temporizador, muestra el progreso y se empaqueta para Android con Capacitor.',
     },
     decisions: {
       en: [
@@ -220,51 +213,6 @@ export const projectsData: Project[] = [
       },
     },
   },
-  {
-    id: 'microservices-core-api',
-    title: 'Modular core API in NestJS',
-    context: {
-      en: 'Backend architecture · auth and testing',
-      es: 'Arquitectura backend · autenticación y pruebas',
-    },
-    role: {
-      en: 'Backend engineer: module design, auth, test suite',
-      es: 'Ingeniero backend: diseño de módulos, autenticación, pruebas',
-    },
-    problem: {
-      en: 'As monolithic APIs grow they pick up loose permissions and untested paths, which makes concurrent transaction processing a security and reliability risk.',
-      es: 'Al crecer, las APIs monolíticas acumulan permisos laxos y rutas sin pruebas, y eso convierte el procesamiento concurrente de transacciones en un riesgo de seguridad y fiabilidad.',
-    },
-    solution: {
-      en: 'A NestJS API split into modules along Clean Architecture lines, with dependency injection, JWT authentication, per-route RBAC guards, a Redis cache and OpenAPI docs generated from the code.',
-      es: 'Una API en NestJS dividida en módulos según Arquitectura Limpia, con inyección de dependencias, autenticación JWT, guards RBAC por ruta, caché en Redis y documentación OpenAPI generada desde el código.',
-    },
-    result: {
-      label: {
-        en: 'API docs that can’t drift from the code, and a Jest unit and integration suite behind every module.',
-        es: 'Documentación que no se desfasa del código y una suite de Jest unitaria y de integración detrás de cada módulo.',
-      },
-    },
-    tech: ['NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker Compose', 'Jest', 'OpenAPI'],
-    // TODO(Ivan): replace with this project's repository URL.
-    links: { github: 'https://github.com/ivandex16' },
-    layout: 'split',
-    pipeline: {
-      caption: {
-        en: 'Auth and role checks run before any domain code.',
-        es: 'Autenticación y roles se verifican antes de cualquier código de dominio.',
-      },
-      steps: {
-        en: ['Client', 'JWT guard', 'RBAC guard', 'Controller', 'Use case', 'Redis cache', 'PostgreSQL (on miss)'],
-        es: ['Cliente', 'Guard JWT', 'Guard RBAC', 'Controlador', 'Caso de uso', 'Caché Redis', 'PostgreSQL (si no hay caché)'],
-      },
-      span: {
-        from: 1,
-        to: 2,
-        label: { en: '401 / 403 stop here', es: '401 / 403 se cortan aquí' },
-      },
-    },
-  },
 ];
 
 /* Ordered by how much of my day each group takes, not alphabetically. */
@@ -272,27 +220,32 @@ export const techStackData: TechCategory[] = [
   {
     title: { en: 'Core', es: 'Base' },
     note: { en: 'What I write every day', es: 'Lo que uso a diario' },
-    skills: ['TypeScript', 'Node.js', 'NestJS', 'PostgreSQL', 'SQL Server', 'React'],
+    skills: ['TypeScript', 'Node.js', 'NestJS', 'React', 'PostgreSQL', 'SQL Server'],
   },
   {
     title: { en: 'Backend and data', es: 'Backend y datos' },
     note: { en: 'APIs, storage, auth', es: 'APIs, almacenamiento, autenticación' },
-    skills: ['Express', 'REST', 'GraphQL', 'JWT and RBAC', 'Redis', 'MongoDB', 'Schema design and indexing', 'Cursor pagination', 'OpenAPI'],
+    skills: ['Express', 'REST API design', 'GraphQL', 'JWT and granular RBAC', 'Stored procedures', 'ACID transactions', 'Schema design and indexing', 'Redis', 'MongoDB', 'MySQL', 'OpenAPI / Swagger'],
   },
   {
     title: { en: 'Frontend', es: 'Frontend' },
     note: { en: 'Interfaces for the APIs above', es: 'Interfaces para esas APIs' },
-    skills: ['Next.js (App Router)', 'SSR / SSG', 'Tailwind CSS', 'Core Web Vitals'],
+    skills: ['Next.js (App Router, SSR / SSG)', 'Redux Toolkit', 'Custom hooks and dynamic forms', 'Tailwind CSS', 'Accessibility (WCAG)'],
+  },
+  {
+    title: { en: 'AI integration', es: 'Integración de IA' },
+    note: { en: 'LLMs inside real features', es: 'LLMs dentro de funciones reales' },
+    skills: ['Google Gemini API', 'OpenAI API', 'Structured JSON output', 'Prompt engineering'],
   },
   {
     title: { en: 'Cloud and delivery', es: 'Cloud y entrega' },
     note: { en: 'Getting it to production', es: 'Llevarlo a producción' },
-    skills: ['AWS (EC2, S3, IAM, VPC)', 'Docker', 'GitHub Actions', 'Linux and Bash', 'Terraform (foundations)'],
+    skills: ['AWS (EC2, S3, IAM, VPC)', 'Docker', 'GitHub Actions', 'Git', 'Linux'],
   },
   {
     title: { en: 'Practice', es: 'Práctica' },
     note: { en: 'How I keep it maintainable', es: 'Cómo lo mantengo mantenible' },
-    skills: ['Jest', 'React Testing Library', 'Clean Architecture', 'SOLID', 'Microservices'],
+    skills: ['Jest', 'React Testing Library', 'Clean Architecture', 'SOLID', 'Microservices', 'Code reviews', 'Scrum'],
   },
 ];
 
@@ -315,22 +268,10 @@ export const educationData = [
       en: 'Architecting Solutions on AWS',
       es: 'Architecting Solutions on AWS',
     },
-    period: { en: 'Completed', es: 'Completado' },
+    period: { en: 'Oct 2026', es: 'Oct 2026' },
     details: {
       en: 'High availability, VPC design, IAM, decoupling with SQS/SNS, EC2 and S3.',
       es: 'Alta disponibilidad, diseño de VPC, IAM, desacoplamiento con SQS/SNS, EC2 y S3.',
-    },
-  },
-  {
-    institution: { en: 'Self-directed', es: 'Autodidacta' },
-    title: {
-      en: 'NestJS module architecture and Next.js in production',
-      es: 'Arquitectura modular en NestJS y Next.js en producción',
-    },
-    period: { en: 'Ongoing', es: 'En curso' },
-    details: {
-      en: 'Dependency injection, microservice boundaries, SSR/SSG/ISR trade-offs, end-to-end type safety.',
-      es: 'Inyección de dependencias, límites entre microservicios, SSR/SSG/ISR, tipado de punta a punta.',
     },
   },
 ];
@@ -339,6 +280,6 @@ export const languagesData = [
   { name: { en: 'Spanish', es: 'Español' }, level: { en: 'Native', es: 'Nativo' } },
   {
     name: { en: 'English', es: 'Inglés' },
-    level: { en: 'Professional working proficiency (B2+)', es: 'Competencia profesional (B2+)' },
+    level: { en: 'Professional working proficiency (B2+), technical and conversational', es: 'Competencia profesional (B2+), técnica y conversacional' },
   },
 ];

@@ -208,7 +208,7 @@ export const Projects: React.FC = () => {
       id="work"
       index="01"
       label={en ? 'Work' : 'Proyectos'}
-      title={en ? 'Three systems, written up as case studies' : 'Tres sistemas, contados como casos de estudio'}
+      title={en ? 'Selected systems, written up as case studies' : 'Sistemas seleccionados, contados como casos de estudio'}
       intro={
         en
           ? 'Roughly how I’d explain them in a technical interview: what was going wrong, what I chose and why, and what changed.'

@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
     <!-- Primary Meta Tags -->
-    <title>Ivan Cabeza | Full Stack & Backend Software Engineer (NestJS • Next.js • TypeScript)</title>
-    <meta name="title" content="Ivan Cabeza | Full Stack & Backend Software Engineer (NestJS • Next.js • TypeScript)" />
-    <meta name="description" content="Full Stack Software Engineer with 4+ years of experience architecting microservices, optimizing database performance, and building high-performance web applications across the TypeScript ecosystem." />
+    <title>Ivan Cabeza — Full-stack engineer, backend first (TypeScript, NestJS, PostgreSQL)</title>
+    <meta name="title" content="Ivan Cabeza — Full-stack engineer, backend first (TypeScript, NestJS, PostgreSQL)" />
+    <meta name="description" content="Full-stack engineer based in Colombia, 4+ years in production TypeScript. APIs, transactional data layers on PostgreSQL and SQL Server, and the Next.js front ends that use them. Open to remote contract roles." />
     <meta name="keywords" content="Ivan Cabeza, Ivan Javier Cabeza Garces, Full Stack Developer, Backend Engineer, NestJS Developer, React Developer, Next.js, TypeScript Engineer, Remote Developer Colombia, Software Engineer Remote USD" />
     <meta name="author" content="Ivan Javier Cabeza Garces" />
     <meta name="robots" content="index, follow" />
@@ -17,23 +17,32 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ivancbgz.vercel.app/" />
     <meta property="og:title" content="Ivan Cabeza | Full Stack & Backend Software Engineer" />
-    <meta property="og:description" content="Building Scalable TypeScript Systems: From Modular NestJS APIs to High-Performance Next.js Interfaces. 4+ years of proven production experience." />
+    <meta property="og:description" content="APIs, transactional data layers and Next.js front ends. NestJS, PostgreSQL, SQL Server. 4+ years in production, open to remote contract roles." />
     <meta property="og:image" content="https://ivancbgz.vercel.app/og-image.png" />
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://ivancbgz.vercel.app/" />
     <meta property="twitter:title" content="Ivan Cabeza | Full Stack & Backend Software Engineer" />
-    <meta property="twitter:description" content="Building Scalable TypeScript Systems: From Modular NestJS APIs to High-Performance Next.js Interfaces." />
+    <meta property="twitter:description" content="APIs, transactional data layers and Next.js front ends. 4+ years in production TypeScript." />
     <meta property="twitter:image" content="https://ivancbgz.vercel.app/og-image.png" />
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>" />
+    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f0f0e" media="(prefers-color-scheme: dark)" />
 
-    <!-- Google Fonts Preconnect & Inter / JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Apply saved / system theme before first paint to avoid a flash -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('portfolio_theme');
+          if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          if (t === 'dark') document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%23141413%22/><text x=%2250%22 y=%2272%22 font-family=%22monospace%22 font-size=%2252%22 text-anchor=%22middle%22 fill=%22%23ff7a45%22>ic</text></svg>" />
 
     <!-- Schema.org JSON-LD for Search Engines -->
     <script type="application/ld+json">
@@ -71,12 +80,12 @@
       ],
       "sameAs": [
         "https://linkedin.com/in/ivancbgz",
-        "https://github.com/ivancbgz"
+        "https://github.com/ivandex16"
       ]
     }
     </script>
   </head>
-  <body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-cyan-500/20 selection:text-cyan-300">
+  <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

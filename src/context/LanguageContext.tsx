@@ -11,13 +11,21 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem('portfolio_lang');
-    if (saved === 'es' || saved === 'en') return saved;
-    return 'en'; // English by default as requested
+    try {
+      const saved = localStorage.getItem('portfolio_lang');
+      if (saved === 'es' || saved === 'en') return saved;
+    } catch {
+      /* storage unavailable */
+    }
+    return 'en'; // English by default: the site targets international remote roles
   });
 
   useEffect(() => {
-    localStorage.setItem('portfolio_lang', language);
+    try {
+      localStorage.setItem('portfolio_lang', language);
+    } catch {
+      /* storage unavailable */
+    }
     document.documentElement.lang = language;
   }, [language]);
 

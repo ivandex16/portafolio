@@ -1,135 +1,202 @@
-import React, { useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
 import { personalInfo } from '../data/content';
-import { Sun, Moon, FileText, Menu, X, Globe } from './Icons';
+import { Sun, Moon, Menu, X } from './Icons';
+
+const SECTIONS = ['work', 'experience', 'stack', 'contact'] as const;
+
+/** Marks the section currently under the header so the nav doubles as a progress indicator. */
+const useActiveSection = () => {
+  const [active, setActive] = useState<string | null>(null);
+  useEffect(() => {
+    const els = SECTIONS.map(id => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
+    );
+    els.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+  return active;
+};
+
+/** Reading progress, written straight to the element's transform (no re-render per scroll event). */
+const useScrollProgress = () => {
+  const ref = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      if (ref.current) ref.current.style.transform = `scaleX(${max > 0 ? Math.min(1, window.scrollY / max) : 0})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+  return ref;
+};
 
 export const Navbar: React.FC = () => {
   const { language, toggleLanguage } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const active = useActiveSection();
+  const progressRef = useScrollProgress();
+  const en = language === 'en';
 
-  const navLinks = [
-    { href: '#experience', label: language === 'en' ? 'Experience' : 'Experiencia' },
-    { href: '#projects', label: language === 'en' ? 'Projects' : 'Proyectos' },
-    { href: '#stack', label: language === 'en' ? 'Tech Stack' : 'Tecnologías' },
-    { href: '#education', label: language === 'en' ? 'Education' : 'Educación' },
-    { href: '#contact', label: language === 'en' ? 'Contact' : 'Contacto' },
-  ];
+  // One indicator that slides to the active link instead of one per link fading in and out.
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [indicator, setIndicator] = useState<{ x: number; w: number } | null>(null);
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = active ? linkRefs.current[active] : null;
+      setIndicator(el ? { x: el.offsetLeft + 12, w: el.offsetWidth - 24 } : null);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [active, language]);
+
+  const labels: Record<(typeof SECTIONS)[number], string> = {
+    work: en ? 'Work' : 'Proyectos',
+    experience: en ? 'Experience' : 'Experiencia',
+    stack: 'Stack',
+    contact: en ? 'Contact' : 'Contacto',
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
+  const control =
+    'inline-flex h-11 min-w-11 items-center justify-center px-2 font-mono text-meta text-ink transition-colors hover:bg-surface';
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/50 bg-white/80 backdrop-blur-md transition-colors dark:border-zinc-800/80 dark:bg-zinc-950/80">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
-        {/* Brand */}
-        <a 
-          href="#" 
-          className="group flex items-center gap-2.5 text-zinc-900 transition-colors dark:text-zinc-100"
-          aria-label="Ivan Cabeza Home"
-        >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500 to-indigo-600 font-mono text-sm font-bold text-white shadow-sm transition-transform group-hover:scale-105">
-            IC
-          </div>
-          <div className="flex flex-col">
-            <span className="font-mono text-sm font-bold tracking-tight">ivan.dev</span>
-            <span className="flex items-center gap-1.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
-              </span>
-              {language === 'en' ? 'Open to roles' : 'Disponible'}
-            </span>
-          </div>
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper">
+      {/* reading progress: the header's bottom border fills in ink as you scroll */}
+      <span
+        ref={progressRef}
+        aria-hidden="true"
+        className="absolute inset-x-0 -bottom-px h-px origin-left bg-ink"
+        style={{ transform: 'scaleX(0)' }}
+      />
+      <div className="mx-auto flex h-16 max-w-page items-center justify-between gap-6 px-5 md:px-8">
+        <a href="#top" className="group flex items-baseline gap-3 text-ink">
+          <span className="font-semibold tracking-[-0.01em]">{personalInfo.shortName}</span>
+          <span className="label hidden lg:inline">{en ? 'Full-stack · backend first' : 'Full stack · foco en backend'}</span>
         </a>
 
-        {/* Desktop Navigation Links */}
-        <nav className="hidden items-center gap-6 md:flex" aria-label="Main Navigation">
-          {navLinks.map(link => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-xs font-medium text-zinc-600 transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-            >
-              {link.label}
-            </a>
-          ))}
+        <nav className="hidden md:block" aria-label={en ? 'Main' : 'Principal'}>
+          <ul className="relative flex items-center gap-1">
+            {SECTIONS.map(id => (
+              <li key={id}>
+                <a
+                  ref={el => (linkRefs.current[id] = el)}
+                  href={`#${id}`}
+                  aria-current={active === id ? 'true' : undefined}
+                  className={`block px-3 py-2 text-body transition-colors hover:text-ink ${
+                    active === id ? 'text-ink' : 'text-muted'
+                  }`}
+                >
+                  {labels[id]}
+                </a>
+              </li>
+            ))}
+            <li
+              aria-hidden="true"
+              className={`pointer-events-none absolute -bottom-[10px] left-0 h-0.5 bg-accent transition-[transform,width,opacity] duration-300 ease-out ${
+                indicator ? 'opacity-100' : 'opacity-0'
+              }`}
+              style={indicator ? { width: indicator.w, transform: `translateX(${indicator.x}px)` } : { width: 0 }}
+            />
+          </ul>
         </nav>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2.5">
-          {/* Language Switch */}
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center gap-1.5 rounded-lg border border-zinc-200 bg-zinc-100/80 px-2.5 py-1.5 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            title={language === 'en' ? 'Cambiar a Español' : 'Switch to English'}
-            aria-label="Toggle language"
-          >
-            <Globe className="h-3.5 w-3.5 text-cyan-500" />
-            <span className="font-mono uppercase">{language}</span>
-          </button>
-
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="rounded-lg border border-zinc-200 bg-zinc-100/80 p-1.5 text-zinc-700 transition hover:bg-zinc-200 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-            title={theme === 'dark' ? 'Switch to Light Mode' : 'Cambiar a Modo Oscuro'}
-            aria-label="Toggle theme"
-          >
-            {theme === 'dark' ? (
-              <Sun className="h-4 w-4 text-amber-400" />
-            ) : (
-              <Moon className="h-4 w-4 text-indigo-600" />
-            )}
-          </button>
-
-          {/* Resume CTA */}
+        <div className="flex items-center">
           <a
             href={personalInfo.resumePath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden items-center gap-1.5 rounded-lg bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-zinc-800 sm:inline-flex dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+            download="Ivan-Cabeza-CV.pdf"
+            className="mr-2 hidden h-9 items-center border border-ink px-3 font-mono text-meta transition-colors hover:bg-ink hover:text-paper sm:inline-flex"
           >
-            <FileText className="h-3.5 w-3.5" />
-            <span>{language === 'en' ? 'Resume' : 'Ver CV'}</span>
+            {en ? 'CV ↓' : 'CV ↓'}
           </a>
-
-          {/* Mobile Hamburger Toggle */}
           <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="rounded-lg border border-zinc-200 p-1.5 text-zinc-700 md:hidden dark:border-zinc-800 dark:text-zinc-300"
-            aria-label="Toggle mobile menu"
+            type="button"
+            onClick={toggleLanguage}
+            className={control}
+            aria-label={en ? 'Ver en español' : 'View in English'}
+            lang={en ? 'es' : 'en'}
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {en ? 'ES' : 'EN'}
+          </button>
+          <button
+            type="button"
+            onClick={e => {
+              const r = e.currentTarget.getBoundingClientRect();
+              toggleTheme({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
+            }}
+            className={control}
+            aria-label={
+              theme === 'dark'
+                ? en ? 'Switch to light theme' : 'Cambiar a tema claro'
+                : en ? 'Switch to dark theme' : 'Cambiar a tema oscuro'
+            }
+          >
+            {theme === 'dark' ? <Sun className="h-[18px] w-[18px]" /> : <Moon className="h-[18px] w-[18px]" />}
+          </button>
+          <button
+            type="button"
+            onClick={() => setOpen(o => !o)}
+            className={`${control} md:hidden`}
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            aria-label={open ? (en ? 'Close menu' : 'Cerrar menú') : en ? 'Open menu' : 'Abrir menú'}
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="border-b border-zinc-200 bg-white px-4 py-4 md:hidden dark:border-zinc-800 dark:bg-zinc-950">
-          <nav className="flex flex-col space-y-3" aria-label="Mobile Navigation">
-            {navLinks.map(link => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-medium text-zinc-700 transition hover:text-cyan-500 dark:text-zinc-300"
-              >
-                {link.label}
-              </a>
+      {open && (
+        <nav id="mobile-nav" className="border-t border-rule bg-paper md:hidden" aria-label={en ? 'Main' : 'Principal'}>
+          <ul className="mx-auto max-w-page px-5 py-2">
+            {SECTIONS.map((id, i) => (
+              <li key={id} className="border-b border-rule last:border-b-0">
+                <a href={`#${id}`} onClick={() => setOpen(false)} className="flex items-baseline gap-4 py-4 text-lead text-ink">
+                  <span className="label">{String(i + 1).padStart(2, '0')}</span>
+                  {labels[id]}
+                </a>
+              </li>
             ))}
-            <div className="pt-2">
+            <li>
               <a
                 href={personalInfo.resumePath}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-lg bg-cyan-600 py-2 text-center text-xs font-semibold text-white shadow-sm"
+                download="Ivan-Cabeza-CV.pdf"
+                className="flex items-baseline gap-4 py-4 text-lead text-ink"
               >
-                <FileText className="h-4 w-4" />
-                {language === 'en' ? 'Download CV (PDF)' : 'Descargar CV (PDF)'}
+                <span className="label">PDF</span>
+                {en ? 'Download CV' : 'Descargar CV'}
               </a>
-            </div>
-          </nav>
-        </div>
+            </li>
+          </ul>
+        </nav>
       )}
     </header>
   );

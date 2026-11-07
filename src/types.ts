@@ -1,30 +1,30 @@
 export type Language = 'en' | 'es';
 
+export type Localized<T = string> = Record<Language, T>;
+
+export interface Pipeline {
+  caption: Localized;
+  steps: Localized<string[]>;
+  /** Bracket drawn over a run of steps, e.g. a database transaction (inclusive indexes). */
+  span?: { from: number; to: number; label: Localized };
+  /** Side exit from one step, e.g. what happens to rejected input. */
+  branch?: { at: number; label: Localized };
+}
+
 export interface Project {
   id: string;
   title: string;
-  badge: {
-    en: string;
-    es: string;
-  };
-  role: {
-    en: string;
-    es: string;
-  };
-  problem: {
-    en: string;
-    es: string;
-  };
-  solution: {
-    en: string;
-    es: string;
-  };
-  impact: {
-    metric: string;
-    label: {
-      en: string;
-      es: string;
-    };
+  /** Short context line: domain · company · constraints */
+  context: Localized;
+  role: Localized;
+  problem: Localized;
+  solution: Localized;
+  /** Architectural decisions worth defending in an interview */
+  decisions?: Localized<string[]>;
+  /** The single headline result for this case. Each metric appears only once on the site. */
+  result: {
+    metric?: string;
+    label: Localized;
   };
   tech: string[];
   links?: {
@@ -32,63 +32,34 @@ export interface Project {
     github?: string;
     isNDA?: boolean;
   };
-  architectureDetails?: {
-    overview: {
-      en: string;
-      es: string;
-    };
-    keyDecisions: {
-      en: string[];
-      es: string[];
-    };
-    diagramSummary: {
-      en: string;
-      es: string;
-    };
+  /**
+   * Optional screenshot (put files in /public/projects/, ideally .webp ≤ 200 KB, 1600px wide).
+   * When present it is shown above the architecture diagram.
+   */
+  media?: {
+    src: string;
+    width: number;
+    height: number;
+    alt: Localized;
   };
+  pipeline: Pipeline;
+  /** 'wide' = full-width horizontal diagram; 'split' = text and vertical diagram side by side */
+  layout: 'wide' | 'split';
 }
 
 export interface ExperienceItem {
   company: string;
-  role: {
-    en: string;
-    es: string;
-  };
-  location: {
-    en: string;
-    es: string;
-  };
-  period: {
-    en: string;
-    es: string;
-  };
-  achievements: {
-    en: string[];
-    es: string[];
-  };
+  role: Localized;
+  location: Localized;
+  period: Localized;
+  summary: Localized;
+  highlights: { value: string; label: Localized }[];
+  achievements: Localized<string[]>;
   tech: string[];
 }
 
-export interface MetricItem {
-  value: string;
-  label: {
-    en: string;
-    es: string;
-  };
-  description: {
-    en: string;
-    es: string;
-  };
-}
-
 export interface TechCategory {
-  title: {
-    en: string;
-    es: string;
-  };
-  skills: {
-    name: string;
-    level: 'Core' | 'Architecture' | 'Cloud';
-    iconName?: string;
-  }[];
+  title: Localized;
+  note: Localized;
+  skills: string[];
 }

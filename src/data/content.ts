@@ -1,356 +1,344 @@
-import { Project, ExperienceItem, MetricItem, TechCategory } from '../types';
+import { Project, ExperienceItem, TechCategory } from '../types';
+
+/*
+  Metric placement rule: every number appears in exactly ONE place.
+  - Hero:        4+ years
+  - Experience:  >25% latency cut, >80% test coverage, 100K+ records
+  - Procurement: ~1200ms → <300ms
+*/
 
 export const personalInfo = {
-  name: "Ivan Javier Cabeza Garces",
-  shortName: "Ivan Cabeza",
-  title: {
-    en: "Full Stack & Backend Software Engineer",
-    es: "Ingeniero de Software Full Stack & Backend"
+  name: 'Ivan Javier Cabeza Garces',
+  shortName: 'Ivan Cabeza',
+  role: {
+    en: 'Full-stack engineer, backend first.',
+    es: 'Ingeniero full stack, con foco en backend.',
   },
-  tagline: {
-    en: "Building Scalable TypeScript Systems: From Modular NestJS APIs to High-Performance Next.js Interfaces.",
-    es: "Construyendo Sistemas Escalables en TypeScript: Desde APIs Modulares en NestJS hasta Interfaces en Next.js de Alto Rendimiento."
+  intro: {
+    en: 'I build APIs, transactional data layers and the Next.js interfaces that sit on top of them, in TypeScript with NestJS, PostgreSQL and SQL Server. Most recently: hospital procurement and inventory software at SYSNET.',
+    es: 'Construyo APIs, capas de datos transaccionales y las interfaces en Next.js que las usan, en TypeScript con NestJS, PostgreSQL y SQL Server. Lo más reciente: software de compras e inventario hospitalario en SYSNET.',
   },
-  bio: {
-    en: "Software Engineer with 4+ years of hands-on experience designing microservices, optimizing database performance, and shipping resilient web applications across the TypeScript ecosystem. Proven track record reducing API latency by over 25%, establishing automated testing pipelines (Jest/RTL >80% coverage), and deploying production-grade systems on AWS.",
-    es: "Ingeniero de Software con 4+ años de experiencia práctica diseñando microservicios, optimizando bases de datos y entregando aplicaciones web confiables en el ecosistema TypeScript. Trayectoria comprobada reduciendo la latencia de APIs en más del 25%, estableciendo suites de pruebas automatizadas (>80% cobertura) y desplegando sistemas en AWS."
+  location: 'Cartagena, Colombia',
+  timezone: 'UTC−5',
+  yearsExperience: '4+',
+  currentRole: {
+    en: 'Full Stack Engineer at SYSNET',
+    es: 'Ingeniero Full Stack en SYSNET',
   },
-  location: "Cartagena, Colombia",
   availability: {
-    en: "Available for Remote Roles (USD / Contractor / B2B)",
-    es: "Disponible para Roles Remotos (USD / Contractor / B2B)"
+    en: 'Remote contract roles · B2B · USD',
+    es: 'Contratos remotos · B2B · USD',
   },
-  email: "ivandex16@gmail.com",
-  phone: "+57 3218816736",
-  linkedin: "https://linkedin.com/in/ivancbgz",
-  github: "https://github.com/ivancbgz",
-  resumePath: "/resume.pdf"
+  english: {
+    en: 'B2+ · overlaps US Eastern hours',
+    es: 'B2+ · coincide con el horario del Este de EE. UU.',
+  },
+  email: 'ivandex16@gmail.com',
+  linkedin: 'https://linkedin.com/in/ivancbgz',
+  github: 'https://github.com/ivandex16',
+  resumePath: '/resume.pdf',
 };
-
-export const metricsData: MetricItem[] = [
-  {
-    value: "4+ Years",
-    label: {
-      en: "Engineering Experience",
-      es: "Años de Experiencia"
-    },
-    description: {
-      en: "Hands-on production delivery in scalable web apps",
-      es: "Desarrollo en producción de aplicaciones escalables"
-    }
-  },
-  {
-    value: ">25%",
-    label: {
-      en: "API Latency Cut",
-      es: "Reducción de Latencia"
-    },
-    description: {
-      en: "Achieved via Redis caching & database index tuning",
-      es: "Logrado mediante caché en Redis e indexación en BD"
-    }
-  },
-  {
-    value: ">80%",
-    label: {
-      en: "Test Coverage",
-      es: "Cobertura de Pruebas"
-    },
-    description: {
-      en: "Unit and integration tests with Jest & RTL",
-      es: "Pruebas unitarias y de integración con Jest y RTL"
-    }
-  },
-  {
-    value: "100%",
-    label: {
-      en: "End-to-End TypeScript",
-      es: "Ecosistema TypeScript"
-    },
-    description: {
-      en: "Type safety from NestJS backend to Next.js frontend",
-      es: "Seguridad de tipos de backend NestJS a frontend Next.js"
-    }
-  }
-];
 
 export const experienceData: ExperienceItem[] = [
   {
-    company: "SYSNET Ltda",
+    company: 'SYSNET Ltda',
     role: {
-      en: "Full Stack Software Engineer (React • Node.js • NestJS • TypeScript)",
-      es: "Ingeniero de Software Full Stack (React • Node.js • NestJS • TypeScript)"
+      en: 'Full Stack Software Engineer',
+      es: 'Ingeniero de Software Full Stack',
     },
     location: {
-      en: "Cartagena de Indias, Colombia • Remote / Hybrid",
-      es: "Cartagena de Indias, Colombia • Remoto / Híbrido"
+      en: 'Cartagena, Colombia · Remote / hybrid',
+      es: 'Cartagena, Colombia · Remoto / híbrido',
     },
     period: {
-      en: "March 2022 – Present",
-      es: "Marzo 2022 – Presente"
+      en: 'Mar 2022 – present',
+      es: 'Mar 2022 – presente',
     },
+    summary: {
+      en: 'Full-stack work on business systems, from schema and API design to the React screens, where a lost write shows up as a stock or accounting error.',
+      es: 'Trabajo full stack en sistemas de negocio, desde el esquema y la API hasta las pantallas en React, donde una escritura perdida aparece como un error de stock o contable.',
+    },
+    highlights: [
+      {
+        value: '>25%',
+        label: {
+          en: 'lower latency on critical endpoints, from Redis caching and query indexing',
+          es: 'menos latencia en endpoints críticos, con caché en Redis e indexación de consultas',
+        },
+      },
+      {
+        value: '>80%',
+        label: {
+          en: 'unit and integration test coverage, kept there with Jest and React Testing Library',
+          es: 'de cobertura unitaria y de integración, sostenida con Jest y React Testing Library',
+        },
+      },
+      {
+        value: '100K+',
+        label: {
+          en: 'records per dataset in SQL Server and MongoDB schemas I modeled and tuned',
+          es: 'registros por conjunto de datos en esquemas de SQL Server y MongoDB que modelé y optimicé',
+        },
+      },
+    ],
     achievements: {
       en: [
-        "Led end-to-end architecture and engineering of modular web applications and microservices using NestJS, Node.js, and React.js, delivering stable and maintainable code across production releases.",
-        "Architected and secured RESTful and GraphQL APIs utilizing JWT and Role-Based Access Control (RBAC), cutting critical endpoint response latency by over 25% with Redis caching and query indexing.",
-        "Modeled and tuned database schemas across SQL Server and MongoDB, implementing indexing strategies, cursor pagination, and ACID transaction isolation for datasets exceeding 100K records.",
-        "Instituted automated testing suites using Jest and React Testing Library, maintaining unit and integration test coverage above 80% and drastically reducing regression incidents.",
-        "Boosted frontend client performance via Next.js SSR/SSG, code splitting, and memoization, substantially improving Largest Contentful Paint (LCP) and Core Web Vitals.",
-        "Streamlined deployment velocity by creating automated CI/CD pipelines with GitHub Actions and Docker containerization, ensuring development-to-production environment parity on AWS."
+        'Led the architecture of modular web applications and microservices in NestJS, Node.js and React.',
+        'Designed REST and GraphQL APIs secured with JWT and role-based access control.',
+        'Applied indexing, cursor pagination and ACID transaction isolation to keep those datasets fast and consistent.',
+        'Improved Core Web Vitals with Next.js SSR/SSG, code splitting and memoization.',
+        'Built CI/CD with GitHub Actions and Docker, keeping development and production on AWS in parity.',
       ],
       es: [
-        "Lideré la arquitectura e ingeniería de aplicaciones web modulares y microservicios con NestJS, Node.js y React.js, entregando código mantenible en lanzamientos a producción.",
-        "Diseñé y aseguré APIs RESTful y GraphQL con JWT y control de acceso basado en roles (RBAC), reduciendo la latencia de endpoints críticos en más del 25% mediante caché en Redis e indexación.",
-        "Modelé y optimicé esquemas de bases de datos en SQL Server y MongoDB, implementando estrategias de indexación, paginación por cursor y aislamiento ACID para más de 100K registros.",
-        "Establecí suites de pruebas automatizadas con Jest y React Testing Library, manteniendo una cobertura superior al 80% y mitigando incidencias de regresión.",
-        "Optimicé el rendimiento frontend mediante Next.js SSR/SSG, división de código y memoización, mejorando sustancialmente el Largest Contentful Paint (LCP) y las Core Web Vitals.",
-        "Aceleré la velocidad de despliegue creando pipelines de CI/CD automatizados con GitHub Actions y Docker, garantizando paridad entre desarrollo y producción en AWS."
-      ]
+        'Lideré la arquitectura de aplicaciones web modulares y microservicios en NestJS, Node.js y React.',
+        'Diseñé APIs REST y GraphQL protegidas con JWT y control de acceso por roles.',
+        'Apliqué indexación, paginación por cursor y aislamiento de transacciones ACID para mantener esos datos rápidos y consistentes.',
+        'Mejoré los Core Web Vitals con SSR/SSG de Next.js, división de código y memoización.',
+        'Monté CI/CD con GitHub Actions y Docker, con paridad entre desarrollo y producción en AWS.',
+      ],
     },
-    tech: ["TypeScript", "NestJS", "Node.js", "React.js", "Next.js", "PostgreSQL", "SQL Server", "MongoDB", "Redis", "Docker", "AWS", "Jest", "GraphQL"]
-  }
+    tech: ['TypeScript', 'NestJS', 'Node.js', 'React', 'Next.js', 'PostgreSQL', 'SQL Server', 'MongoDB', 'Redis', 'GraphQL', 'Docker', 'AWS', 'Jest'],
+  },
 ];
 
 export const projectsData: Project[] = [
   {
-    id: "enterprise-procurement",
-    title: "Enterprise Procurement & Inbound Inventory Engine",
-    badge: {
-      en: "Enterprise Architecture Case Study • NDA Protected",
-      es: "Caso de Estudio de Arquitectura Empresarial • Bajo NDA"
+    id: 'enterprise-procurement',
+    title: 'Procurement and inbound inventory engine',
+    context: {
+      en: 'Healthcare logistics · SYSNET · code under NDA',
+      es: 'Logística hospitalaria · SYSNET · código bajo NDA',
     },
     role: {
-      en: "Full Stack Software Engineer (SYSNET)",
-      es: "Ingeniero de Software Full Stack (SYSNET)"
+      en: 'Full stack engineer: schema, transaction layer and entry UI',
+      es: 'Ingeniero full stack: esquema, capa transaccional e interfaz de captura',
     },
     problem: {
-      en: "Healthcare supply procurement and warehouse inbound workflows were prone to concurrency bottlenecks, stock discrepancies, and delayed financial reconciliation when handling dynamic multi-line purchase invoices.",
-      es: "La adquisición de insumos hospitalarios críticos y el ingreso a almacén sufrían cuellos de botella por concurrencia, descuadres de stock y retrasos en conciliaciones al procesar facturas complejas de múltiples líneas."
+      en: 'When several large supplier invoices were entered at once, hospital purchasing and warehouse intake hit concurrency bottlenecks. Stock counts drifted and financial reconciliation ran late.',
+      es: 'Cuando se registraban a la vez varias facturas grandes de proveedores, las compras y el ingreso a almacén chocaban por concurrencia. El stock se descuadraba y la conciliación financiera llegaba tarde.',
     },
     solution: {
-      en: "Engineered a high-throughput transactional engine with React (custom form hooks for dynamic multi-row entry) and a Node.js/Express backend running strict ACID database transactions, preventing race conditions and ensuring instant inventory reconciliation.",
-      es: "Desarrollé un motor transaccional de alto rendimiento con React (custom hooks de formulario con validación inmediata) y backend Node.js con transacciones ACID estrictas, eliminando condiciones de carrera y asegurando conciliación instantánea."
+      en: 'A transactional engine where the supplier invoice, its tax lines and the batch stock update commit together or roll back together. React handles fast multi-row entry; a Node.js service runs the ACID transaction against SQL Server.',
+      es: 'Un motor transaccional donde la factura del proveedor, sus impuestos y la actualización de stock por lotes se confirman juntos o se revierten juntos. React resuelve la captura rápida de muchas filas; un servicio en Node.js ejecuta la transacción ACID sobre SQL Server.',
     },
-    impact: {
-      metric: ">25% & 100%",
+    decisions: {
+      en: [
+        'Optimistic concurrency with row-level locks on stock counters, so simultaneous pallet receptions don’t deadlock.',
+        'VAT, withholding and margin maths moved into custom hooks outside the render path, so forms with 100+ rows stay responsive.',
+        'Connection pooling and indexes aimed at SKU and supplier-batch lookups, the hottest queries in the system.',
+      ],
+      es: [
+        'Concurrencia optimista con bloqueos por fila en los contadores de stock, para que las recepciones simultáneas no se bloqueen entre sí.',
+        'Cálculos de IVA, retenciones y márgenes en custom hooks fuera del render, para que los formularios de más de 100 filas sigan fluidos.',
+        'Pool de conexiones e índices dirigidos a las búsquedas por SKU y lote de proveedor, las consultas más usadas del sistema.',
+      ],
+    },
+    result: {
+      metric: '~1200 ms → <300 ms',
       label: {
-        en: "Latency reduction & 100% stock reconciliation accuracy",
-        es: "Reducción de latencia y 100% de precisión en stock"
-      }
-    },
-    tech: ["React.js", "Node.js", "Express", "PostgreSQL", "SQL Server", "ACID Transactions", "Docker", "Tailwind CSS"],
-    links: {
-      isNDA: true
-    },
-    architectureDetails: {
-      overview: {
-        en: "Built to process multi-item hospital logistics with atomic operations. Ensures that supplier billing, tax calculation, and batch inventory updates either commit together or roll back entirely.",
-        es: "Diseñado para logística hospitalaria con operaciones atómicas. Garantiza que la facturación de proveedores, cálculo de impuestos e inventario por lotes se confirmen juntos o se reviertan íntegramente."
+        en: 'SKU and supplier-batch query time after index and pool tuning',
+        es: 'Tiempo de las consultas por SKU y lote de proveedor tras ajustar índices y pool',
       },
-      keyDecisions: {
-        en: [
-          "Optimistic concurrency control with row-level locks on stock counters to avoid deadlock during simultaneous pallet receptions.",
-          "Custom React hook architecture decoupling complex multi-field calculation (VAT, withholding, unit margins) from the rendering cycle, avoiding lag on 100+ row forms.",
-          "Connection pooling and database index tuning targeting SKU and supplier batch queries, reducing execution time from ~1200ms to <300ms."
-        ],
-        es: [
-          "Control de concurrencia optimista con bloqueos a nivel de fila en contadores de stock para evitar bloqueos mutuos durante recepciones simultáneas.",
-          "Arquitectura de custom hooks en React que desacopla cálculos complejos (IVA, retenciones, márgenes unitarios) del ciclo de renderizado, evitando lag en formularios de más de 100 filas.",
-          "Afinamiento de pools de conexión e indexación dirigida a SKU y lotes de proveedores, reduciendo el tiempo de ejecución de ~1200ms a <300ms."
-        ]
+    },
+    tech: ['React', 'Node.js', 'Express', 'SQL Server', 'PostgreSQL', 'Docker'],
+    links: { isNDA: true },
+    layout: 'wide',
+    pipeline: {
+      caption: {
+        en: 'One invoice, one transaction. Client details removed.',
+        es: 'Una factura, una transacción. Sin datos del cliente.',
       },
-      diagramSummary: {
-        en: "React Dynamic Form Client → Auth/RBAC Guard → Transaction Manager (Node.js) → [BEGIN TRANSACTION] → SQL Server Stock Allocator + Ledger Journal → [COMMIT] → Event Hook",
-        es: "Cliente Formulario React → Guard Auth/RBAC → Administrador Transaccional (Node.js) → [BEGIN TRANSACTION] → Asignador Stock SQL Server + Asiento Contable → [COMMIT] → Hook de Evento"
-      }
-    }
+      steps: {
+        en: ['Multi-row entry form (React)', 'Auth / RBAC guard', 'Transaction manager (Node.js)', 'Invoice + tax lines', 'Batch stock update', 'Ledger entry', 'Event hook'],
+        es: ['Formulario multi-fila (React)', 'Guard Auth / RBAC', 'Gestor transaccional (Node.js)', 'Factura + impuestos', 'Actualización de stock por lote', 'Asiento contable', 'Hook de evento'],
+      },
+      span: {
+        from: 3,
+        to: 5,
+        label: { en: 'BEGIN … COMMIT · SQL Server · all or nothing', es: 'BEGIN … COMMIT · SQL Server · todo o nada' },
+      },
+    },
   },
   {
-    id: "ai-health-fitness",
-    title: "AI-Powered Health & Fitness Web Application",
-    badge: {
-      en: "Full Stack Product • Generative AI & Schema Validation",
-      es: "Producto Full Stack • IA Generativa & Validación de Esquemas"
+    id: 'ai-gym-trainer',
+    title: 'AI gym trainer and workout tracker',
+    context: {
+      en: 'Full-stack product · generative AI · web and Android',
+      es: 'Producto full stack · IA generativa · web y Android',
     },
     role: {
-      en: "Lead Full Stack Engineer & Product Builder",
-      es: "Líder Full Stack & Desarrollador de Producto"
+      en: 'Built it end to end: API, recommendation engine, React client, Android build',
+      es: 'Lo construí de punta a punta: API, motor de recomendaciones, cliente React, build Android',
     },
     problem: {
-      en: "Standard generative AI apps suffer from hallucinations and malformed JSON structures when building complex multi-day workout regimes and macro-targeted meal plans, breaking frontend client applications.",
-      es: "Las aplicaciones estándar con IA generativa sufren de alucinaciones y estructuras JSON malformadas al generar planes nutricionales y rutinas de múltiples días, provocando caídas en la interfaz."
+      en: 'Routine suggestions can’t depend only on an LLM. The model may be unconfigured, fail, or answer with text that isn’t valid JSON, and the user still expects a plan for the week.',
+      es: 'Las sugerencias de rutina no pueden depender solo de un LLM. El modelo puede no estar configurado, fallar o responder con texto que no es JSON válido, y el usuario igual espera su plan de la semana.',
     },
     solution: {
-      en: "Built a resilient Next.js (App Router) platform featuring real-time token streaming via Server-Sent Events (SSE) paired with runtime Zod schema parsing. Enforces 100% type safety and consistent UI data contracts before rendering.",
-      es: "Construí una plataforma en Next.js (App Router) con streaming en tiempo real vía Server-Sent Events (SSE) y validación en tiempo de ejecución con Zod. Garantiza 100% de consistencia de tipos y contratos de datos seguros antes de renderizar."
+      en: 'An Express and MongoDB API with a three-tier recommendation engine: rule-based matching by goal, a scoring engine built on the user’s own workout history, and Gemini for full weekly routines. The React client logs workouts with a live timer, tracks progress and ships to Android with Capacitor.',
+      es: 'Una API en Express y MongoDB con un motor de recomendaciones de tres niveles: reglas según el objetivo, un motor de puntuación basado en el historial de entrenos del usuario y Gemini para rutinas semanales completas. El cliente React registra entrenos con temporizador, muestra el progreso y se empaqueta para Android con Capacitor.',
     },
-    impact: {
-      metric: "100%",
+    decisions: {
+      en: [
+        'Scoring favours the muscle groups trained least in the last 28 days (+3), then level match (+2) and available equipment (+1). Deterministic, so every suggestion can be explained.',
+        'If Gemini is missing, throws, or returns unparseable JSON, the request falls back to the scoring engine or a local multi-day generator instead of returning an error.',
+        'JWT auth with user and admin roles, plus helmet, rate limiting and express-validator on the API.',
+      ],
+      es: [
+        'La puntuación prioriza los grupos musculares menos entrenados en los últimos 28 días (+3), luego el nivel (+2) y el equipamiento disponible (+1). Es determinista, así que cada sugerencia se puede explicar.',
+        'Si Gemini no está configurado, falla o devuelve JSON que no se puede parsear, la petición cae al motor de puntuación o a un generador local de varios días en lugar de devolver un error.',
+        'Autenticación JWT con roles de usuario y admin, más helmet, rate limiting y express-validator en la API.',
+      ],
+    },
+    result: {
       label: {
-        en: "Type-safe schema compliance with zero client render crashes",
-        es: "Cumplimiento estricto de esquemas con cero caídas en la UI"
-      }
+        en: 'A routine is always returned: when the model fails, the deterministic engines take over.',
+        es: 'Siempre se devuelve una rutina: cuando el modelo falla, los motores deterministas toman el relevo.',
+      },
     },
-    tech: ["Next.js (App Router)", "TypeScript", "Anthropic Claude API", "OpenAI API", "Zod", "Tailwind CSS", "Vercel"],
+    tech: ['React', 'Vite', 'Node.js', 'Express', 'MongoDB (Mongoose)', 'Gemini API', 'JWT', 'Jest + Supertest', 'Vitest', 'Capacitor (Android)', 'Tailwind CSS'],
     links: {
-      demo: "https://ivancbgz.vercel.app",
-      github: "https://github.com/ivancbgz"
-    }
+      demo: 'https://app-ia-entrenador-gym-by9z.vercel.app',
+      github: 'https://github.com/ivandex16/app-IA-entrenador-gym',
+    },
+    layout: 'split',
+    pipeline: {
+      caption: {
+        en: 'The LLM is the first choice, never the only one.',
+        es: 'El LLM es la primera opción, nunca la única.',
+      },
+      steps: {
+        en: ['React client (web + Android)', 'Express API · JWT', 'Recommendation engine', 'Gemini 2.5 Flash', 'JSON parse', 'Routine saved (MongoDB)'],
+        es: ['Cliente React (web + Android)', 'API Express · JWT', 'Motor de recomendaciones', 'Gemini 2.5 Flash', 'Parseo de JSON', 'Rutina guardada (MongoDB)'],
+      },
+      branch: {
+        at: 4,
+        label: {
+          en: 'fails or invalid → scoring engine / local generator',
+          es: 'falla o inválido → motor de puntuación / generador local',
+        },
+      },
+    },
   },
   {
-    id: "microservices-core-api",
-    title: "Microservices & Event-Driven Core API",
-    badge: {
-      en: "Backend Architecture • Distributed Systems & Testing",
-      es: "Arquitectura Backend • Sistemas Distribuidos & Testing"
+    id: 'microservices-core-api',
+    title: 'Modular core API in NestJS',
+    context: {
+      en: 'Backend architecture · auth and testing',
+      es: 'Arquitectura backend · autenticación y pruebas',
     },
     role: {
-      en: "Backend Engineer",
-      es: "Ingeniero Backend"
+      en: 'Backend engineer: module design, auth, test suite',
+      es: 'Ingeniero backend: diseño de módulos, autenticación, pruebas',
     },
     problem: {
-      en: "Monolithic architectures struggle under high-concurrency transaction processing, exhibiting security vulnerabilities from loose permissions and lack of test coverage.",
-      es: "Las arquitecturas monolíticas colapsan ante el procesamiento de transacciones altamente concurrentes, exhibiendo vulnerabilidades de seguridad por permisos laxos y falta de cobertura de pruebas."
+      en: 'As monolithic APIs grow they pick up loose permissions and untested paths, which makes concurrent transaction processing a security and reliability risk.',
+      es: 'Al crecer, las APIs monolíticas acumulan permisos laxos y rutas sin pruebas, y eso convierte el procesamiento concurrente de transacciones en un riesgo de seguridad y fiabilidad.',
     },
     solution: {
-      en: "Designed a modular NestJS core API incorporating Clean Architecture, dependency injection, JWT authentication with granular RBAC guards, Redis caching, and automated Swagger/OpenAPI documentation. Backed by a full Jest testing suite.",
-      es: "Diseñé una API central modular en NestJS incorporando Arquitectura Limpia, inyección de dependencias, autenticación JWT con guardias RBAC, capa de caché en Redis y documentación OpenAPI/Swagger automática, respaldada por Jest."
+      en: 'A NestJS API split into modules along Clean Architecture lines, with dependency injection, JWT authentication, per-route RBAC guards, a Redis cache and OpenAPI docs generated from the code.',
+      es: 'Una API en NestJS dividida en módulos según Arquitectura Limpia, con inyección de dependencias, autenticación JWT, guards RBAC por ruta, caché en Redis y documentación OpenAPI generada desde el código.',
     },
-    impact: {
-      metric: ">80%",
+    result: {
       label: {
-        en: "Code coverage via unit and integration tests",
-        es: "Cobertura de código en pruebas unitarias y de integración"
-      }
+        en: 'API docs that can’t drift from the code, and a Jest unit and integration suite behind every module.',
+        es: 'Documentación que no se desfasa del código y una suite de Jest unitaria y de integración detrás de cada módulo.',
+      },
     },
-    tech: ["NestJS", "TypeScript", "PostgreSQL", "Redis", "Docker Compose", "Jest", "Swagger / OpenAPI"],
-    links: {
-      github: "https://github.com/ivancbgz"
-    }
-  }
+    tech: ['NestJS', 'TypeScript', 'PostgreSQL', 'Redis', 'Docker Compose', 'Jest', 'OpenAPI'],
+    // TODO(Ivan): replace with this project's repository URL.
+    links: { github: 'https://github.com/ivandex16' },
+    layout: 'split',
+    pipeline: {
+      caption: {
+        en: 'Auth and role checks run before any domain code.',
+        es: 'Autenticación y roles se verifican antes de cualquier código de dominio.',
+      },
+      steps: {
+        en: ['Client', 'JWT guard', 'RBAC guard', 'Controller', 'Use case', 'Redis cache', 'PostgreSQL (on miss)'],
+        es: ['Cliente', 'Guard JWT', 'Guard RBAC', 'Controlador', 'Caso de uso', 'Caché Redis', 'PostgreSQL (si no hay caché)'],
+      },
+      span: {
+        from: 1,
+        to: 2,
+        label: { en: '401 / 403 stop here', es: '401 / 403 se cortan aquí' },
+      },
+    },
+  },
 ];
 
+/* Ordered by how much of my day each group takes, not alphabetically. */
 export const techStackData: TechCategory[] = [
   {
-    title: {
-      en: "Core Production Stack",
-      es: "Stack Principal en Producción"
-    },
-    skills: [
-      { name: "TypeScript", level: "Core" },
-      { name: "NestJS", level: "Core" },
-      { name: "Node.js", level: "Core" },
-      { name: "React.js", level: "Core" },
-      { name: "Next.js (App Router)", level: "Core" },
-      { name: "Express.js", level: "Core" },
-      { name: "Tailwind CSS", level: "Core" },
-      { name: "RESTful APIs & GraphQL", level: "Core" }
-    ]
+    title: { en: 'Core', es: 'Base' },
+    note: { en: 'What I write every day', es: 'Lo que uso a diario' },
+    skills: ['TypeScript', 'Node.js', 'NestJS', 'PostgreSQL', 'SQL Server', 'React'],
   },
   {
-    title: {
-      en: "Databases, Caching & Data",
-      es: "Bases de Datos, Caché & Modelado"
-    },
-    skills: [
-      { name: "PostgreSQL", level: "Core" },
-      { name: "SQL Server", level: "Core" },
-      { name: "MongoDB", level: "Core" },
-      { name: "Redis (Caching & Invalidation)", level: "Core" },
-      { name: "Schema Design & Indexing", level: "Architecture" },
-      { name: "Cursor & Offset Pagination", level: "Architecture" }
-    ]
+    title: { en: 'Backend and data', es: 'Backend y datos' },
+    note: { en: 'APIs, storage, auth', es: 'APIs, almacenamiento, autenticación' },
+    skills: ['Express', 'REST', 'GraphQL', 'JWT and RBAC', 'Redis', 'MongoDB', 'Schema design and indexing', 'Cursor pagination', 'OpenAPI'],
   },
   {
-    title: {
-      en: "Architecture, Security & Quality",
-      es: "Arquitectura, Seguridad & Calidad"
-    },
-    skills: [
-      { name: "Clean Architecture & SOLID", level: "Architecture" },
-      { name: "Microservices Design", level: "Architecture" },
-      { name: "Jest (Unit & Integration)", level: "Architecture" },
-      { name: "React Testing Library", level: "Architecture" },
-      { name: "JWT & Role-Based Access Control (RBAC)", level: "Architecture" },
-      { name: "Core Web Vitals & Web Performance", level: "Architecture" },
-      { name: "OpenAPI / Swagger", level: "Architecture" }
-    ]
+    title: { en: 'Frontend', es: 'Frontend' },
+    note: { en: 'Interfaces for the APIs above', es: 'Interfaces para esas APIs' },
+    skills: ['Next.js (App Router)', 'SSR / SSG', 'Tailwind CSS', 'Core Web Vitals'],
   },
   {
-    title: {
-      en: "Cloud, DevOps & Tooling",
-      es: "Cloud, DevOps & Herramientas"
-    },
-    skills: [
-      { name: "AWS (EC2, S3, IAM, VPC)", level: "Cloud" },
-      { name: "Docker & Containerization", level: "Cloud" },
-      { name: "GitHub Actions (CI/CD)", level: "Cloud" },
-      { name: "Terraform (Foundations)", level: "Cloud" },
-      { name: "Linux & Bash", level: "Cloud" },
-      { name: "Postman", level: "Cloud" },
-      { name: "Git & GitHub", level: "Cloud" }
-    ]
-  }
+    title: { en: 'Cloud and delivery', es: 'Cloud y entrega' },
+    note: { en: 'Getting it to production', es: 'Llevarlo a producción' },
+    skills: ['AWS (EC2, S3, IAM, VPC)', 'Docker', 'GitHub Actions', 'Linux and Bash', 'Terraform (foundations)'],
+  },
+  {
+    title: { en: 'Practice', es: 'Práctica' },
+    note: { en: 'How I keep it maintainable', es: 'Cómo lo mantengo mantenible' },
+    skills: ['Jest', 'React Testing Library', 'Clean Architecture', 'SOLID', 'Microservices'],
+  },
 ];
 
 export const educationData = [
   {
-    institution: "SENA (National Learning Service)",
+    institution: { en: 'SENA (National Learning Service)', es: 'SENA (Servicio Nacional de Aprendizaje)' },
     title: {
-      en: "Analysis and Development of Information Systems",
-      es: "Análisis y Desarrollo de Sistemas de Información"
+      en: 'Analysis and Development of Information Systems',
+      es: 'Análisis y Desarrollo de Sistemas de Información',
     },
-    period: "Aug 2020 – Dec 2022",
+    period: { en: 'Aug 2020 – Dec 2022', es: 'Ago 2020 – Dic 2022' },
     details: {
-      en: "Formal systems analysis, software engineering fundamentals, database architecture, and algorithms.",
-      es: "Formación integral en análisis de sistemas, fundamentos de ingeniería de software, arquitectura de bases de datos y algoritmos."
-    }
+      en: 'Systems analysis, software engineering fundamentals, database design and algorithms.',
+      es: 'Análisis de sistemas, fundamentos de ingeniería de software, diseño de bases de datos y algoritmos.',
+    },
   },
   {
-    institution: "Amazon Web Services (via Coursera)",
+    institution: { en: 'Amazon Web Services · Coursera', es: 'Amazon Web Services · Coursera' },
     title: {
-      en: "Architecting Solutions on AWS",
-      es: "Architecting Solutions on AWS"
+      en: 'Architecting Solutions on AWS',
+      es: 'Architecting Solutions on AWS',
     },
-    period: "Completed",
+    period: { en: 'Completed', es: 'Completado' },
     details: {
-      en: "Cloud architecture best practices: High availability, VPC design, IAM security, decoupling with SQS/SNS, and resilient compute on EC2/S3.",
-      es: "Mejores prácticas de arquitectura en la nube: alta disponibilidad, diseño de VPC, seguridad IAM y cómputo resiliente con EC2/S3."
-    }
+      en: 'High availability, VPC design, IAM, decoupling with SQS/SNS, EC2 and S3.',
+      es: 'Alta disponibilidad, diseño de VPC, IAM, desacoplamiento con SQS/SNS, EC2 y S3.',
+    },
   },
   {
-    institution: "Specialized Engineering Tracks",
+    institution: { en: 'Self-directed', es: 'Autodidacta' },
     title: {
-      en: "Enterprise NestJS Modular Architecture & Production Next.js",
-      es: "Arquitectura Modular Empresarial en NestJS & Next.js en Producción"
+      en: 'NestJS module architecture and Next.js in production',
+      es: 'Arquitectura modular en NestJS y Next.js en producción',
     },
-    period: "Continuous Learning",
+    period: { en: 'Ongoing', es: 'En curso' },
     details: {
-      en: "In-depth specialization in scalable backend microservices, dependency injection, SSR/SSG/ISR optimization, and full-stack TypeScript safety.",
-      es: "Especialización avanzada en microservicios backend escalables, inyección de dependencias, optimización SSR/SSG/ISR y seguridad de tipos en TypeScript."
-    }
-  }
+      en: 'Dependency injection, microservice boundaries, SSR/SSG/ISR trade-offs, end-to-end type safety.',
+      es: 'Inyección de dependencias, límites entre microservicios, SSR/SSG/ISR, tipado de punta a punta.',
+    },
+  },
 ];
 
 export const languagesData = [
+  { name: { en: 'Spanish', es: 'Español' }, level: { en: 'Native', es: 'Nativo' } },
   {
-    name: {
-      en: "Spanish",
-      es: "Español"
-    },
-    level: {
-      en: "Native",
-      es: "Nativo"
-    }
+    name: { en: 'English', es: 'Inglés' },
+    level: { en: 'Professional working proficiency (B2+)', es: 'Competencia profesional (B2+)' },
   },
-  {
-    name: {
-      en: "English",
-      es: "Inglés"
-    },
-    level: {
-      en: "Professional Working Proficiency (B2+)",
-      es: "Competencia Profesional de Trabajo (B2+)"
-    }
-  }
 ];

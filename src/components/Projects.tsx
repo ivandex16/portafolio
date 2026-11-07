@@ -1,145 +1,225 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { projectsData } from '../data/content';
 import { Project } from '../types';
-import { ProjectModal } from './ProjectModal';
-import { ExternalLink, Github, Eye, Layers, TrendingUp } from './Icons';
+import { Section } from './Section';
+import { Reveal } from './Reveal';
+import { FlowDiagram } from './FlowDiagram';
+import { CountUp, ShrinkBar, parseBeforeAfter } from './CountUp';
+
+/** A GitHub URL with only one path segment is a profile, not a repository. Label it honestly. */
+const isProfileUrl = (url: string) => new URL(url).pathname.split('/').filter(Boolean).length < 2;
+
+const Block: React.FC<{ title: string; children: React.ReactNode; className?: string }> = ({
+  title,
+  children,
+  className = '',
+}) => (
+  <div className={className}>
+    <h4 className="label mb-3 text-ink">{title}</h4>
+    <div className="text-body">{children}</div>
+  </div>
+);
+
+const Decisions: React.FC<{ items: string[] }> = ({ items }) => (
+  <ol className="space-y-4">
+    {items.map((d, i) => (
+      <li key={d} className="grid grid-cols-[1.75rem_1fr]">
+        <span className="label pt-[3px]">{String.fromCharCode(97 + i)}.</span>
+        <span>{d}</span>
+      </li>
+    ))}
+  </ol>
+);
+
+const Result: React.FC<{ project: Project }> = ({ project }) => {
+  const { language } = useLanguage();
+  const { metric, label } = project.result;
+  return (
+    <div className="border-l-2 border-accent pl-5">
+      {metric && (
+        <p className="font-mono text-[clamp(1.5rem,2.4vw,2rem)] leading-tight tracking-[-0.02em] text-ink tabular-nums">
+          <CountUp value={metric} />
+        </p>
+      )}
+      {metric && parseBeforeAfter(metric) && (
+        <ShrinkBar ratio={parseBeforeAfter(metric)!.ratio} label={label[language]} />
+      )}
+      <p className={metric ? 'mt-2 text-body text-muted' : 'text-lead text-ink'}>{label[language]}</p>
+    </div>
+  );
+};
+
+const Links: React.FC<{ project: Project }> = ({ project }) => {
+  const { language } = useLanguage();
+  const en = language === 'en';
+  const { links } = project;
+
+  if (links?.isNDA) {
+    return (
+      <p className="text-muted">
+        {en ? 'Code under NDA. Happy to walk through the design in an interview.' : 'Código bajo NDA. Puedo explicar el diseño en una entrevista.'}
+      </p>
+    );
+  }
+  if (!links?.demo && !links?.github) return null;
+
+  return (
+    <ul className="flex flex-wrap gap-x-6 gap-y-2">
+      {links.demo && (
+        <li>
+          <a href={links.demo} target="_blank" rel="noopener noreferrer" className="link">
+            {en ? 'Live demo' : 'Demo en vivo'} <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      )}
+      {links.github && (
+        <li>
+          <a href={links.github} target="_blank" rel="noopener noreferrer" className="link">
+            {isProfileUrl(links.github)
+              ? en ? 'GitHub profile' : 'Perfil de GitHub'
+              : en ? 'Source on GitHub' : 'Código en GitHub'}{' '}
+            <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      )}
+    </ul>
+  );
+};
+
+const CaseStudy: React.FC<{ project: Project; index: number }> = ({ project, index }) => {
+  const { language } = useLanguage();
+  const en = language === 'en';
+  const number = String(index + 1).padStart(2, '0');
+  const flipped = project.layout === 'split' && index % 2 === 0;
+  const diagramLabel = en ? `Architecture flow: ${project.title}` : `Flujo de arquitectura: ${project.title}`;
+
+  const figure = (
+    <figure className="bg-surface p-5 md:p-8">
+      {project.media && (
+        <img
+          src={project.media.src}
+          width={project.media.width}
+          height={project.media.height}
+          alt={project.media.alt[language]}
+          loading="lazy"
+          decoding="async"
+          className="mb-8 h-auto w-full border border-rule"
+        />
+      )}
+      <FlowDiagram pipeline={project.pipeline} label={diagramLabel} wide={project.layout === 'wide'} />
+      <figcaption className="label mt-6 border-t border-rule pt-4">{project.pipeline.caption[language]}</figcaption>
+    </figure>
+  );
+
+  const footer = (
+    <Reveal as="dl" className="page-grid mt-12 gap-y-6 border-t border-rule pt-6 text-body">
+      <div className="col-span-4 md:col-span-4">
+        <dt className="label mb-1">{en ? 'My role' : 'Mi rol'}</dt>
+        <dd>{project.role[language]}</dd>
+      </div>
+      <div className="col-span-4 md:col-span-4">
+        <dt className="label mb-1">Stack</dt>
+        <dd>{project.tech.join(', ')}</dd>
+      </div>
+      <div className="col-span-4 md:col-span-4">
+        <dt className="label mb-1">{en ? 'Links' : 'Enlaces'}</dt>
+        <dd>
+          <Links project={project} />
+        </dd>
+      </div>
+    </Reveal>
+  );
+
+  return (
+    <article aria-labelledby={`${project.id}-title`} className="border-t border-rule pt-8 first:border-t-0 first:pt-0">
+      <Reveal>
+      <p className="label">
+        <span className="text-ink">{en ? `Case ${number}` : `Caso ${number}`}</span>
+        <span aria-hidden="true" className="mx-2">·</span>
+        {project.context[language]}
+      </p>
+
+      <div className="page-grid mt-5 gap-y-8">
+        <h3
+          id={`${project.id}-title`}
+          className="col-span-4 text-[clamp(1.75rem,3.4vw,2.75rem)] font-medium leading-[1.08] tracking-[-0.025em] md:col-span-7"
+        >
+          {project.title}
+        </h3>
+        <div className="col-span-4 md:col-span-5 md:col-start-8 md:pt-2">
+          <Result project={project} />
+        </div>
+      </div>
+      </Reveal>
+
+      {project.layout === 'wide' ? (
+        <>
+          <Reveal className="mt-12" delay={80}>{figure}</Reveal>
+          <Reveal className="page-grid mt-12 gap-y-10">
+            <Block title={en ? 'Problem' : 'Problema'} className="col-span-4 md:col-span-6 lg:col-span-4">
+              {project.problem[language]}
+            </Block>
+            <Block title={en ? 'Approach' : 'Solución'} className="col-span-4 md:col-span-6 lg:col-span-4">
+              {project.solution[language]}
+            </Block>
+            {project.decisions && (
+              <Block title={en ? 'Key decisions' : 'Decisiones clave'} className="col-span-4 md:col-span-12 lg:col-span-4">
+                <Decisions items={project.decisions[language]} />
+              </Block>
+            )}
+          </Reveal>
+        </>
+      ) : (
+        <div className="page-grid mt-12 gap-y-10">
+          <Reveal
+            className={`col-span-4 space-y-10 md:col-span-6 lg:col-span-6 ${
+              flipped ? 'md:order-2 md:col-start-7 lg:col-start-7' : ''
+            }`}
+          >
+            <Block title={en ? 'Problem' : 'Problema'}>{project.problem[language]}</Block>
+            <Block title={en ? 'Approach' : 'Solución'}>{project.solution[language]}</Block>
+            {project.decisions && (
+              <Block title={en ? 'Key decisions' : 'Decisiones clave'}>
+                <Decisions items={project.decisions[language]} />
+              </Block>
+            )}
+          </Reveal>
+          <Reveal
+            delay={120}
+            className={`col-span-4 md:col-span-6 lg:col-span-5 ${flipped ? 'md:order-1 lg:col-start-1' : 'lg:col-start-8'}`}
+          >
+            {figure}
+          </Reveal>
+        </div>
+      )}
+
+      {footer}
+    </article>
+  );
+};
 
 export const Projects: React.FC = () => {
   const { language } = useLanguage();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const en = language === 'en';
 
   return (
-    <section id="projects" className="py-16 md:py-24">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="flex flex-col space-y-2">
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-cyan-500">
-            {language === 'en' ? 'Engineered Systems' : 'Sistemas de Ingeniería'}
-          </span>
-          <h2 className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-            {language === 'en' ? 'Featured Production & Architectural Projects' : 'Proyectos Destacados en Producción y Arquitectura'}
-          </h2>
-          <p className="max-w-2xl text-xs text-zinc-600 sm:text-sm dark:text-zinc-400">
-            {language === 'en'
-              ? 'Real-world solutions highlighting distributed systems, strict type contracts, and database optimization.'
-              : 'Soluciones reales enfocadas en sistemas distribuidos, contratos de tipos estrictos y optimización de bases de datos.'}
-          </p>
-        </div>
-
-        {/* Projects Grid */}
-        <div className="mt-10 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {projectsData.map(project => (
-            <article
-              key={project.id}
-              className="glow-card flex flex-col justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-sm transition hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900/90"
-            >
-              <div>
-                {/* Badge */}
-                <div className="flex items-center justify-between gap-2">
-                  <span className="inline-flex rounded-md border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[10px] font-semibold text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800/80 dark:text-zinc-300">
-                    {project.badge[language]}
-                  </span>
-                </div>
-
-                {/* Title & Role */}
-                <h3 className="mt-3 text-base font-bold text-zinc-900 dark:text-zinc-100">
-                  {project.title}
-                </h3>
-                <p className="mt-0.5 text-xs text-cyan-600 dark:text-cyan-400 font-medium">
-                  {project.role[language]}
-                </p>
-
-                {/* Problem Statement */}
-                <div className="mt-4 space-y-1.5">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                    {language === 'en' ? 'The Challenge' : 'El Desafío'}
-                  </span>
-                  <p className="text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-                    {project.problem[language]}
-                  </p>
-                </div>
-
-                {/* Solution */}
-                <div className="mt-3 space-y-1.5">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                    {language === 'en' ? 'Engineering Solution' : 'Solución de Ingeniería'}
-                  </span>
-                  <p className="text-xs leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    {project.solution[language]}
-                  </p>
-                </div>
-
-                {/* Impact Highlight */}
-                <div className="mt-4 flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-2.5 dark:border-emerald-500/30 dark:bg-emerald-500/10">
-                  <TrendingUp className="h-4 w-4 shrink-0 text-emerald-500" />
-                  <div className="text-[11px] leading-tight text-emerald-700 dark:text-emerald-400">
-                    <span className="font-bold">{project.impact.metric}:</span> {project.impact.label[language]}
-                  </div>
-                </div>
-
-                {/* Tech Pills */}
-                <div className="mt-4 flex flex-wrap gap-1.5">
-                  {project.tech.map((t, idx) => (
-                    <span
-                      key={idx}
-                      className="rounded border border-zinc-200/80 bg-zinc-50 px-1.5 py-0.5 font-mono text-[10px] text-zinc-600 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-400"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-zinc-100 pt-4 dark:border-zinc-800/80">
-                {project.links?.isNDA ? (
-                  <button
-                    onClick={() => setSelectedProject(project)}
-                    className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-zinc-900 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-                  >
-                    <Layers className="h-3.5 w-3.5 text-cyan-500" />
-                    <span>{language === 'en' ? 'Architecture Breakdown' : 'Ver Arquitectura'}</span>
-                  </button>
-                ) : (
-                  <>
-                    {project.links?.demo && (
-                      <a
-                        href={project.links.demo}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-cyan-600 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-cyan-500"
-                      >
-                        <Eye className="h-3.5 w-3.5" />
-                        <span>{language === 'en' ? 'Live Demo' : 'Ver Demo'}</span>
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
-                    )}
-                    {project.links?.github && (
-                      <a
-                        href={project.links.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:bg-zinc-800"
-                        aria-label="View on GitHub"
-                      >
-                        <Github className="h-3.5 w-3.5" />
-                        <span>{language === 'en' ? 'Source' : 'Código'}</span>
-                      </a>
-                    )}
-                  </>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+    <Section
+      id="work"
+      index="01"
+      label={en ? 'Work' : 'Proyectos'}
+      title={en ? 'Three systems, written up as case studies' : 'Tres sistemas, contados como casos de estudio'}
+      intro={
+        en
+          ? 'Roughly how I’d explain them in a technical interview: what was going wrong, what I chose and why, and what changed.'
+          : 'Más o menos como los explicaría en una entrevista técnica: qué fallaba, qué decidí y por qué, y qué cambió.'
+      }
+    >
+      <div className="space-y-24 md:space-y-36">
+        {projectsData.map((p, i) => (
+          <CaseStudy key={p.id} project={p} index={i} />
+        ))}
       </div>
-
-      {/* Case Study Modal */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
-    </section>
+    </Section>
   );
 };

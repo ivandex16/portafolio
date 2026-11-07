@@ -3,8 +3,8 @@ import { Project, ExperienceItem, TechCategory, Localized } from '../types';
 /*
   Metric placement rule: every number appears in exactly ONE place.
   - Hero:        4+ years
-  - Experience:  70% fewer re-renders, >80% test coverage
-  - Procurement: ~1200ms → <300ms
+  - Experience:  50,000+ records, thousands of appointments, 30+ form fields
+  - Procurement: no metric (not measured)
 */
 
 export const personalInfo = {
@@ -60,34 +60,41 @@ export const experienceData: ExperienceItem[] = [
     },
     highlights: [
       {
-        value: '70%',
+        value: '50,000+',
         label: {
-          en: 'fewer re-renders in high-volume data-entry forms, with a custom useForm hook, React.memo and useCallback',
-          es: 'menos re-renders en formularios de captura masiva, con un hook useForm propio, React.memo y useCallback',
+          en: 'medical and transactional records in SQL Server and PostgreSQL where I tuned queries, indexes and ACID transactions',
+          es: 'registros clínicos y transaccionales en SQL Server y PostgreSQL donde optimicé consultas, índices y transacciones ACID',
         },
       },
       {
-        value: '>80%',
+        value: { en: 'Thousands', es: 'Miles' },
         label: {
-          en: 'unit and integration test coverage, kept there with Jest and React Testing Library',
-          es: 'de cobertura unitaria y de integración, sostenida con Jest y React Testing Library',
+          en: 'of medical appointments booked in real time through my Node.js REST API, from web portals and WhatsApp',
+          es: 'de citas médicas agendadas en tiempo real con mi API REST en Node.js, desde portales web y WhatsApp',
+        },
+      },
+      {
+        value: '30+',
+        label: {
+          en: 'input fields in dynamic React procurement forms, kept lag-free with a custom useForm hook and memoization',
+          es: 'campos en formularios dinámicos de compras en React, sin retardos gracias a un hook useForm propio y memoización',
         },
       },
     ],
     achievements: {
       en: [
-        'Built and deployed an internal Node.js REST API on top of the existing SIOS healthcare database, so client web portals and WhatsApp chatbots can book appointments and check schedules in real time.',
+        'Built and deployed an internal Node.js REST API on top of the existing SIOS healthcare database, so client web portals and WhatsApp chatbots can book appointments in real time.',
         'Worked on the front end and back end of the procurement and inbound inventory system (React, TypeScript, Node.js/NestJS): purchase-order workflows, dynamic tax calculation and atomic stock updates.',
-        'Designed schemas, indexes and stored procedures in PostgreSQL and SQL Server, with strict ACID transactions on inventory tables so stock counts no longer drift.',
-        'Supported clinical records modules in production: wrote and refactored stored procedures and carried new clinical fields and validation rules through patient templates.',
-        'Kept development and production environments consistent with Docker and CI/CD pipelines, in a Scrum team.',
+        'Designed schemas, indexes and stored procedures in PostgreSQL and SQL Server, with strict ACID transactions on inventory tables in a multi-client setup.',
+        'Supported clinical records modules in production: wrote stored procedures and carried new clinical fields and validation rules through interdependent patient templates.',
+        'Wrote unit and integration tests with Jest and React Testing Library for critical transaction calculations and healthcare flows, and ran delivery through Docker CI/CD pipelines in a Scrum team.',
       ],
       es: [
-        'Construí y desplegué una API REST interna en Node.js sobre la base de datos de salud SIOS, para que portales web de clientes y chatbots de WhatsApp agenden citas y consulten horarios en tiempo real.',
+        'Construí y desplegué una API REST interna en Node.js sobre la base de datos de salud SIOS, para que portales web de clientes y chatbots de WhatsApp agenden citas en tiempo real.',
         'Trabajé en el front end y el back end del sistema de compras e ingreso de inventario (React, TypeScript, Node.js/NestJS): flujos de órdenes de compra, cálculo dinámico de impuestos y actualizaciones de stock atómicas.',
-        'Diseñé esquemas, índices y procedimientos almacenados en PostgreSQL y SQL Server, con transacciones ACID estrictas en las tablas de inventario para que el stock deje de descuadrarse.',
-        'Di soporte en producción a los módulos de historias clínicas: escribí y refactoricé procedimientos almacenados y llevé nuevos campos clínicos y reglas de validación a las plantillas de pacientes.',
-        'Mantuve entornos de desarrollo y producción consistentes con Docker y pipelines de CI/CD, en un equipo Scrum.',
+        'Diseñé esquemas, índices y procedimientos almacenados en PostgreSQL y SQL Server, con transacciones ACID estrictas en las tablas de inventario en un entorno multi-cliente.',
+        'Di soporte en producción a los módulos de historias clínicas: escribí procedimientos almacenados y llevé nuevos campos clínicos y reglas de validación a plantillas de pacientes interdependientes.',
+        'Escribí pruebas unitarias y de integración con Jest y React Testing Library para cálculos transaccionales críticos y flujos de salud, con entrega por pipelines de CI/CD en Docker dentro de un equipo Scrum.',
       ],
     },
     tech: ['TypeScript', 'React', 'Node.js', 'NestJS', 'Express', 'PostgreSQL', 'SQL Server', 'Stored procedures', 'Docker', 'Jest', 'React Testing Library'],
@@ -127,10 +134,9 @@ export const projectsData: Project[] = [
       ],
     },
     result: {
-      metric: '~1200 ms → <300 ms',
       label: {
-        en: 'SKU and supplier-batch query time after index and pool tuning',
-        es: 'Tiempo de las consultas por SKU y lote de proveedor tras ajustar índices y pool',
+        en: 'Each invoice commits or rolls back as a whole, so stock and accounting stay in step even when receptions happen at the same time.',
+        es: 'Cada factura se confirma o se revierte completa, así el stock y la contabilidad cuadran aunque las recepciones ocurran a la vez.',
       },
     },
     tech: ['React', 'Node.js', 'Express', 'SQL Server', 'PostgreSQL', 'Docker'],

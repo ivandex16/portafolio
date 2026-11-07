@@ -32,14 +32,17 @@ export const Experience: React.FC = () => {
 
           {/* The three numbers that matter, each with what produced it */}
           <ul className="page-grid mt-14 gap-y-8 border-y border-rule py-8">
-            {item.highlights.map((h, i) => (
-              <Reveal as="li" key={h.value} delay={i * 90} className="col-span-4 md:col-span-4">
+            {item.highlights.map((h, i) => {
+              const value = typeof h.value === 'string' ? h.value : h.value[language];
+              return (
+              <Reveal as="li" key={i} delay={i * 90} className="col-span-4 md:col-span-4">
                 <p className="font-mono text-[clamp(1.75rem,3vw,2.5rem)] leading-none tracking-[-0.03em] text-accent tabular-nums">
-                  <CountUp value={h.value} />
+                  <CountUp value={value} />
                 </p>
                 <p className="mt-3 max-w-[20rem] text-body text-muted">{h.label[language]}</p>
               </Reveal>
-            ))}
+              );
+            })}
           </ul>
 
           <Reveal className="page-grid mt-12 gap-y-10">

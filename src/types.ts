@@ -53,7 +53,8 @@ export interface ExperienceItem {
   location: Localized;
   period: Localized;
   summary: Localized;
-  highlights: { value: string; label: Localized }[];
+  /** A number ("50,000+") or a localized word ("Thousands" / "Miles") */
+  highlights: { value: string | Localized; label: Localized }[];
   achievements: Localized<string[]>;
   tech: string[];
 }

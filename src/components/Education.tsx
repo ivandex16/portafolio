@@ -19,6 +19,11 @@ export const Education: React.FC = () => {
                 <h3 className="text-lead font-medium">{item.title[language]}</h3>
                 <p className="text-body text-muted">{item.institution[language]}</p>
                 <p className="mt-3 max-w-prose text-body">{item.details[language]}</p>
+                {item.verify && (
+                  <a href={item.verify} target="_blank" rel="noopener noreferrer" className="link mt-3 inline-block text-body">
+                    {en ? 'Verify certificate' : 'Verificar certificado'} <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </div>
             </Reveal>
           ))}

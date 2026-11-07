@@ -1,4 +1,4 @@
-import { Project, ExperienceItem, TechCategory } from '../types';
+import { Project, ExperienceItem, TechCategory, Localized } from '../types';
 
 /*
   Metric placement rule: every number appears in exactly ONE place.
@@ -249,7 +249,33 @@ export const techStackData: TechCategory[] = [
   },
 ];
 
-export const educationData = [
+export const educationData: {
+  institution: Localized;
+  title: Localized;
+  period: Localized;
+  details: Localized;
+  verify?: string;
+}[] = [
+  {
+    institution: { en: 'Amazon Web Services · Coursera (course certificate)', es: 'Amazon Web Services · Coursera (certificado de curso)' },
+    title: { en: 'Architecting Solutions on AWS', es: 'Architecting Solutions on AWS' },
+    period: { en: 'Oct 2026', es: 'Oct 2026' },
+    details: {
+      en: 'High availability, VPC design, IAM, decoupling with SQS/SNS, EC2 and S3.',
+      es: 'Alta disponibilidad, diseño de VPC, IAM, desacoplamiento con SQS/SNS, EC2 y S3.',
+    },
+    verify: 'https://coursera.org/verify/Z3T5AYWSF9WF',
+  },
+  {
+    institution: { en: 'Amazon Web Services · Coursera (course certificate)', es: 'Amazon Web Services · Coursera (certificado de curso)' },
+    title: { en: 'AWS Cloud Technical Essentials', es: 'AWS Cloud Technical Essentials' },
+    period: { en: 'Nov 2025', es: 'Nov 2025' },
+    details: {
+      en: 'Core AWS services: IAM, EC2, VPC networking, S3 and EBS storage, RDS and DynamoDB, load balancing and auto scaling.',
+      es: 'Servicios base de AWS: IAM, EC2, redes con VPC, almacenamiento S3 y EBS, RDS y DynamoDB, balanceo de carga y auto scaling.',
+    },
+    verify: 'https://coursera.org/verify/7XO0AMYVIXOK',
+  },
   {
     institution: { en: 'SENA (National Learning Service)', es: 'SENA (Servicio Nacional de Aprendizaje)' },
     title: {
@@ -260,18 +286,6 @@ export const educationData = [
     details: {
       en: 'Systems analysis, software engineering fundamentals, database design and algorithms.',
       es: 'Análisis de sistemas, fundamentos de ingeniería de software, diseño de bases de datos y algoritmos.',
-    },
-  },
-  {
-    institution: { en: 'Amazon Web Services · Coursera', es: 'Amazon Web Services · Coursera' },
-    title: {
-      en: 'Architecting Solutions on AWS',
-      es: 'Architecting Solutions on AWS',
-    },
-    period: { en: 'Oct 2026', es: 'Oct 2026' },
-    details: {
-      en: 'High availability, VPC design, IAM, decoupling with SQS/SNS, EC2 and S3.',
-      es: 'Alta disponibilidad, diseño de VPC, IAM, desacoplamiento con SQS/SNS, EC2 y S3.',
     },
   },
 ];

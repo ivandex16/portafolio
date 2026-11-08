@@ -35,11 +35,20 @@
     color-scheme: dark;
   }
 
-  /* In dark mode the inverse block (contact, footer) is a raised surface rather than a flip to white. */
+  /*
+    Contact + footer surfaces use the landing-page-design skill's dark background set
+    (#181818 · #1F1F1F · #272727 · #313131). Light mode: #181818 base; dark mode: one step raised.
+  */
+  :root:not(.dark) .inverse {
+    --paper: #181818;
+    --surface: #1f1f1f;
+    --rule: #313131;
+  }
+
   .dark .inverse {
-    --paper: #1a1a18;
-    --surface: #232320;
-    --rule: #383834;
+    --paper: #1f1f1f;
+    --surface: #272727;
+    --rule: #313131;
   }
 
   html {
@@ -170,7 +179,39 @@
   mix-blend-mode: normal;
 }
 
+/*
+  WhatsApp badge: two rings ripple out of the green circle three times when the tile
+  enters the screen, then keep going only while the tile is hovered.
+*/
+.wa-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid #25d366;
+  opacity: 0;
+  pointer-events: none;
+}
+.is-in .wa-ring {
+  animation: wa-ring 2s cubic-bezier(0.22, 1, 0.36, 1) 3 both;
+}
+.group:hover .wa-ring {
+  animation-iteration-count: infinite;
+}
+@keyframes wa-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .wa-ring {
+    display: none;
+  }
   *,
   *::before,
   *::after {

@@ -1,97 +1,69 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { experienceData } from '../data/content';
-import { Briefcase, Calendar, MapPin, CheckCircle } from './Icons';
+import { Section } from './Section';
+import { Reveal } from './Reveal';
+import { CountUp } from './CountUp';
 
 export const Experience: React.FC = () => {
   const { language } = useLanguage();
+  const en = language === 'en';
 
   return (
-    <section id="experience" className="border-t border-zinc-200/80 bg-zinc-50/50 py-16 md:py-24 transition-colors dark:border-zinc-800/80 dark:bg-zinc-900/20">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="flex flex-col space-y-2">
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-cyan-500">
-            {language === 'en' ? 'Track Record' : 'Trayectoria'}
-          </span>
-          <h2 className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-            {language === 'en' ? 'Professional Engineering Experience' : 'Experiencia Profesional en Ingeniería'}
-          </h2>
-          <p className="max-w-2xl text-xs text-zinc-600 sm:text-sm dark:text-zinc-400">
-            {language === 'en'
-              ? 'Delivering stable, scalable, and high-performance software in production environments.'
-              : 'Entrega de software estable, escalable y de alto rendimiento en entornos de producción.'}
-          </p>
-        </div>
-
-        {/* Timeline */}
-        <div className="mt-10 space-y-8">
-          {experienceData.map((item, idx) => (
-            <div
-              key={idx}
-              className="relative rounded-xl border border-zinc-200 bg-white p-6 shadow-sm transition hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900"
-            >
-              {/* Top Meta */}
-              <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Briefcase className="h-4 w-4 text-cyan-500" />
-                    <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
-                      {item.company}
-                    </h3>
-                  </div>
-                  <p className="mt-0.5 text-xs font-semibold text-zinc-700 sm:text-sm dark:text-zinc-300">
-                    {item.role[language]}
-                  </p>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-3 text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="h-3.5 w-3.5" />
-                    {item.period[language]}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {item.location[language]}
-                  </span>
-                </div>
-              </div>
-
-              {/* Achievements with metrics */}
-              <div className="mt-5 space-y-3">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                  {language === 'en' ? 'Core Achievements & Production Impact' : 'Logros Principales e Impacto en Producción'}
-                </span>
-                <ul className="space-y-2.5">
-                  {item.achievements[language].map((ach, i) => (
-                    <li key={i} className="flex items-start gap-2.5 text-xs leading-relaxed text-zinc-700 sm:text-sm dark:text-zinc-300">
-                      <CheckCircle className="h-4 w-4 shrink-0 text-cyan-500 mt-0.5" />
-                      <span>{ach}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Tech Stack Used */}
-              <div className="mt-6 border-t border-zinc-100 pt-4 dark:border-zinc-800/80">
-                <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-                  {language === 'en' ? 'Applied Stack' : 'Tecnologías Aplicadas'}
-                </span>
-                <div className="mt-2 flex flex-wrap gap-1.5">
-                  {item.tech.map((t, i) => (
-                    <span
-                      key={i}
-                      className="rounded border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-[10px] font-medium text-zinc-700 dark:border-zinc-800 dark:bg-zinc-800/60 dark:text-zinc-300"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
+    <Section id="experience" index="02" label={en ? 'Experience' : 'Experiencia'} title={en ? 'Where I’ve been shipping' : 'Dónde he estado trabajando'}>
+      {experienceData.map(item => (
+        <article key={item.company} aria-labelledby={`${item.company}-title`}>
+          <Reveal className="page-grid gap-y-3">
+            <div className="col-span-4 md:col-span-8">
+              <h3 id={`${item.company}-title`} className="text-[clamp(1.75rem,3.4vw,2.75rem)] font-medium leading-[1.08] tracking-[-0.025em]">
+                {item.company}
+              </h3>
+              <p className="mt-2 text-lead">{item.role[language]}</p>
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
+            <p className="label col-span-4 md:col-span-4 md:pt-3 md:text-right">
+              <span className="block text-ink">{item.period[language]}</span>
+              <span className="block">{item.location[language]}</span>
+            </p>
+          </Reveal>
+
+          <Reveal as="p" delay={80} className="mt-8 max-w-[44rem] text-lead text-muted">
+            {item.summary[language]}
+          </Reveal>
+
+          {/* The three numbers that matter, each with what produced it */}
+          <ul className="page-grid mt-14 gap-y-8 border-y border-rule py-8">
+            {item.highlights.map((h, i) => {
+              const value = typeof h.value === 'string' ? h.value : h.value[language];
+              return (
+              <Reveal as="li" key={i} delay={i * 90} className="col-span-4 md:col-span-4">
+                <p className="font-mono text-[clamp(1.75rem,3vw,2.5rem)] leading-none tracking-[-0.03em] text-accent tabular-nums">
+                  <CountUp value={value} />
+                </p>
+                <p className="mt-3 max-w-[20rem] text-body text-muted">{h.label[language]}</p>
+              </Reveal>
+              );
+            })}
+          </ul>
+
+          <Reveal className="page-grid mt-12 gap-y-10">
+            <div className="col-span-4 md:col-span-3">
+              <h4 className="label text-ink">{en ? 'Also' : 'Además'}</h4>
+            </div>
+            <ul className="col-span-4 space-y-4 md:col-span-9 lg:col-span-7">
+              {item.achievements[language].map(a => (
+                <li key={a} className="grid grid-cols-[1.25rem_1fr] text-body">
+                  <span aria-hidden="true" className="text-muted">–</span>
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="col-span-4 md:col-span-3">
+              <h4 className="label text-ink">Stack</h4>
+            </div>
+            <p className="col-span-4 text-body text-muted md:col-span-9 lg:col-span-7">{item.tech.join(', ')}</p>
+          </Reveal>
+        </article>
+      ))}
+    </Section>
   );
 };

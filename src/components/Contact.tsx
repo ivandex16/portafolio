@@ -1,108 +1,160 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import {
+  ArrowUpRight,
+  Check,
+  Copy,
+  DownloadSimple,
+  EnvelopeSimple,
+  GithubLogo,
+  LinkedinLogo,
+  WhatsappLogo,
+} from './PhosphorIcons';
 import { useLanguage } from '../context/LanguageContext';
 import { personalInfo } from '../data/content';
-import { Mail, Copy, Check, Linkedin, Github, FileDown, Send } from './Icons';
+import { Reveal } from './Reveal';
+
+/*
+  Contact, built on the landing-page-design skill rules:
+  Phosphor icons, Tailwind type scale, spacing tokens, full borders on cards,
+  base curve cubic-bezier(0.22,1,0.36,1) on transform/opacity only,
+  hover + active + focus states on every control.
+*/
+const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 
 export const Contact: React.FC = () => {
   const { language } = useLanguage();
+  const en = language === 'en';
   const [copied, setCopied] = useState(false);
+  const timer = useRef<number>();
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText(personalInfo.email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+      setCopied(true);
+      window.clearTimeout(timer.current);
+      timer.current = window.setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.location.href = `mailto:${personalInfo.email}`;
+    }
   };
 
+  const waText = encodeURIComponent(
+    en
+      ? 'Hi Ivan, I saw your portfolio and would like to talk about a role.'
+      : 'Hola Iván, vi tu portafolio y me gustaría hablar sobre una oportunidad.'
+  );
+  const whatsappHref = `${personalInfo.whatsapp}?text=${waText}`;
+
+  const tile = `group relative flex items-center gap-4 overflow-hidden border border-rule p-4 transition-[transform,border-color] duration-300 sm:p-6 ${EASE} active:scale-[0.98]`;
+  const sweep = `pointer-events-none absolute inset-0 origin-left scale-x-0 transition-transform duration-500 ${EASE} group-hover:scale-x-100`;
+  const arrow = `relative h-5 w-5 shrink-0 text-muted transition-transform duration-500 ${EASE} group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink`;
+
+  const secondary = [
+    { label: 'LinkedIn', href: personalInfo.linkedin, Icon: LinkedinLogo, external: true },
+    { label: 'GitHub', href: personalInfo.github, Icon: GithubLogo, external: true },
+    { label: en ? 'Download CV' : 'Descargar CV', href: personalInfo.resumePath, Icon: DownloadSimple, download: 'Ivan-Cabeza-CV.pdf' },
+  ];
+
   return (
-    <section id="contact" className="py-16 md:py-24">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6">
-        <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm text-center dark:border-zinc-800 dark:bg-zinc-900/90 sm:p-12">
-          {/* Tag */}
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-500/20 bg-cyan-500/10 px-3 py-1 font-mono text-xs font-semibold text-cyan-600 dark:border-cyan-500/30 dark:text-cyan-400">
-            <Send className="h-3 w-3" />
-            {language === 'en' ? 'Get in Touch' : 'Hablemos'}
-          </span>
+    <section id="contact" aria-labelledby="contact-title" className="inverse bg-paper text-ink">
+      <div className="mx-auto max-w-page px-5 py-20 md:px-8 md:py-24">
+        <p className="label" aria-hidden="true">
+          <span className="text-accent">05</span>
+          <span className="mx-2">/</span>
+          {en ? 'Contact' : 'Contacto'}
+        </p>
 
-          <h2 className="mt-4 text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-4xl dark:text-zinc-100">
-            {language === 'en' ? 'Ready to Scale Your Systems?' : '¿Listo para Escalar tus Sistemas?'}
-          </h2>
-
-          <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-zinc-600 sm:text-sm dark:text-zinc-400">
-            {language === 'en'
-              ? 'I am actively open to full-time remote engineering roles (B2B / Contractor in USD or local direct contracts). Let’s connect.'
-              : 'Estoy activamente disponible para roles de ingeniería remotos a tiempo completo (B2B / Contractor en USD o contratos locales directos). Conectemos.'}
-          </p>
-
-          {/* Email Copy Box */}
-          <div className="mx-auto mt-8 flex max-w-md items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-950">
-            <div className="flex items-center gap-2 pl-3">
-              <Mail className="h-4 w-4 text-cyan-500" />
-              <span className="font-mono text-xs font-medium text-zinc-800 sm:text-sm dark:text-zinc-200">
-                {personalInfo.email}
-              </span>
-            </div>
-            <button
-              onClick={copyEmail}
-              className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-900 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
-              aria-label="Copy email address"
+        <div className="page-grid mt-8 gap-y-12">
+          <Reveal className="col-span-4 md:col-span-12 lg:col-span-6">
+            <h2
+              id="contact-title"
+              className="max-w-[680px] text-4xl font-semibold tracking-[-0.03em] [text-wrap:balance] md:text-5xl"
             >
-              {copied ? (
-                <>
-                  <Check className="h-3.5 w-3.5 text-emerald-500" />
-                  <span>{language === 'en' ? 'Copied!' : '¡Copiado!'}</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3.5 w-3.5" />
-                  <span>{language === 'en' ? 'Copy' : 'Copiar'}</span>
-                </>
-              )}
-            </button>
-          </div>
+              {en ? 'Hiring for a remote TypeScript role?' : '¿Buscas un ingeniero TypeScript remoto?'}
+            </h2>
+            <p className="mt-6 max-w-[680px] text-lg text-muted [text-wrap:pretty]">
+              {en
+                ? 'I work full time with remote teams as a contractor (B2B, invoiced in USD or COP), and I am also open to roles at Colombian companies. My working hours overlap US Eastern time.'
+                : 'Trabajo a tiempo completo con equipos remotos como contractor (B2B, facturando en USD o COP), y también estoy abierto a empresas colombianas. Mi horario coincide con el Este de EE. UU.'}
+            </p>
+          </Reveal>
 
-          {/* Action Links */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={`mailto:${personalInfo.email}`}
-              className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-cyan-500 sm:text-sm"
-            >
-              <Mail className="h-4 w-4" />
-              <span>{language === 'en' ? 'Send Email' : 'Enviar Correo'}</span>
-            </a>
+          <div className="col-span-4 flex flex-col gap-4 md:col-span-12 lg:col-span-6">
+            {/* WhatsApp: the fastest way to reach me, so it leads */}
+            <Reveal delay={100}>
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${tile} hover:border-[#25D366]`}
+              >
+                <span aria-hidden="true" className={`${sweep} bg-[#25D366]/10`} />
+                <span aria-hidden="true" className="relative grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[#25D366] text-white">
+                  <span className="wa-ring" />
+                  <span className="wa-ring [animation-delay:600ms]" />
+                  <WhatsappLogo className={`relative h-6 w-6 transition-transform duration-500 ${EASE} group-hover:scale-110`} />
+                </span>
+                <span className="relative min-w-0 flex-1">
+                  <span className="block text-sm text-muted">WhatsApp</span>
+                  <span className="block text-lg font-medium sm:text-xl">{personalInfo.phone}</span>
+                  <span className="mt-1 block text-xs text-muted">
+                    {en ? 'Opens a chat with a message ready to send' : 'Abre un chat con el mensaje listo para enviar'}
+                  </span>
+                </span>
+                <ArrowUpRight aria-hidden="true" className={arrow} />
+              </a>
+            </Reveal>
 
-            <a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-xs font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-            >
-              <Linkedin className="h-4 w-4 text-[#0A66C2]" />
-              <span>LinkedIn</span>
-            </a>
+            {/* Email: whole tile is the mailto link; the copy button sits above it */}
+            <Reveal delay={200}>
+              <div className={`${tile} hover:border-ink`}>
+                <span aria-hidden="true" className={`${sweep} bg-surface`} />
+                <span aria-hidden="true" className="relative grid h-12 w-12 shrink-0 place-items-center border border-rule text-ink">
+                  <EnvelopeSimple className={`h-6 w-6 transition-transform duration-500 ${EASE} group-hover:-rotate-6`} />
+                </span>
+                <span className="relative min-w-0 flex-1">
+                  <span className="block text-sm text-muted">Email</span>
+                  <a
+                    href={`mailto:${personalInfo.email}`}
+                    className="block text-base font-medium sm:text-xl after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:after:outline focus-visible:after:outline-2 focus-visible:after:outline-offset-4 focus-visible:after:outline-accent"
+                  >
+                    {/* if it ever has to wrap, wrap after the @ rather than mid-word */}
+                    {personalInfo.email.split('@')[0]}@<wbr />
+                    {personalInfo.email.split('@')[1]}
+                  </a>
+                </span>
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className={`relative z-10 inline-flex min-h-11 shrink-0 items-center gap-2 border border-rule px-3 py-2 text-sm font-semibold transition-[transform,border-color] duration-300 ${EASE} hover:border-ink active:scale-[0.98]`}
+                >
+                  {copied ? <Check className="h-4 w-4 text-accent" aria-hidden="true" /> : <Copy className="h-4 w-4" aria-hidden="true" />}
+                  <span aria-live="polite" className="sr-only sm:not-sr-only">
+                    {copied ? (en ? 'Copied' : 'Copiado') : en ? 'Copy email' : 'Copiar email'}
+                  </span>
+                </button>
+              </div>
+            </Reveal>
 
-            <a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-xs font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-            >
-              <Github className="h-4 w-4" />
-              <span>GitHub</span>
-            </a>
-
-            <a
-              href={personalInfo.resumePath}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-xs font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-            >
-              <FileDown className="h-4 w-4 text-indigo-500" />
-              <span>{language === 'en' ? 'Download CV' : 'Descargar CV'}</span>
-            </a>
-          </div>
-
-          <div className="mt-8 text-xs text-zinc-500 dark:text-zinc-400">
-            <span>{personalInfo.location} • UTC-5 Timezone</span>
+            <Reveal delay={300} as="ul" className="mt-4 flex flex-wrap gap-x-8 gap-y-4 border-t border-rule pt-6">
+              {secondary.map(({ label, href, Icon, external, download }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    {...(download ? { download } : {})}
+                    className={`group inline-flex items-center gap-2 text-base font-medium transition-transform duration-300 ${EASE} active:translate-y-px`}
+                  >
+                    <Icon aria-hidden="true" className="h-5 w-5 text-muted transition-colors duration-300 group-hover:text-ink" />
+                    <span className="underline decoration-transparent underline-offset-4 transition-[text-decoration-color] duration-300 group-hover:decoration-accent">
+                      {label}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </Reveal>
           </div>
         </div>
       </div>

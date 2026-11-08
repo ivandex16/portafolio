@@ -1,118 +1,104 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { personalInfo } from '../data/content';
-import { ArrowDown, Mail, Github, Linkedin, FileDown, ShieldCheck, Terminal } from './Icons';
 
 export const Hero: React.FC = () => {
   const { language } = useLanguage();
+  const en = language === 'en';
+
+  // Answers the questions a recruiter screens for, in the order they ask them.
+  const facts: [string, React.ReactNode][] = [
+    [en ? 'Based in' : 'Ubicación', `${personalInfo.location} · ${personalInfo.timezone}`],
+    [en ? 'Experience' : 'Experiencia', en ? `${personalInfo.yearsExperience} years in production TypeScript` : `${personalInfo.yearsExperience} años con TypeScript en producción`],
+    [en ? 'Currently' : 'Actualmente', personalInfo.currentRole[language]],
+    [en ? 'Looking for' : 'Busco', personalInfo.availability[language]],
+    [en ? 'English' : 'Inglés', personalInfo.english[language]],
+  ];
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-16 md:pt-20 md:pb-24">
-      {/* Background Subtle Ambient Glow */}
-      <div 
-        className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-96 w-[600px] -translate-x-1/2 rounded-full bg-gradient-to-tr from-cyan-500/10 via-indigo-500/10 to-transparent blur-3xl"
-        aria-hidden="true"
-      />
-
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        {/* Availability Pill */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1 text-xs font-medium text-emerald-600 dark:border-emerald-500/30 dark:text-emerald-400">
-          <span className="flex h-2 w-2 rounded-full bg-emerald-500" />
-          <span>{personalInfo.availability[language]}</span>
-        </div>
-
-        {/* Candidate Identity & Role */}
-        <div className="mt-6 space-y-4">
-          <div className="flex items-center gap-3">
-            <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 sm:text-5xl lg:text-6xl dark:text-zinc-100">
-              {personalInfo.shortName}
-            </h1>
-            <span className="hidden items-center gap-1 rounded border border-zinc-200 bg-zinc-100 px-2 py-0.5 font-mono text-xs text-zinc-600 sm:inline-flex dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
-              <Terminal className="h-3 w-3 text-cyan-500" />
-              TypeScript Engineer
+    <section id="top" aria-labelledby="hero-title" className="mx-auto max-w-page px-5 pb-8 pt-14 md:px-8 md:pb-12 md:pt-24">
+      <div className="page-grid gap-y-14">
+        <div className="col-span-4 md:col-span-12 lg:col-span-7">
+          <h1
+            id="hero-title"
+            className="text-[clamp(3.25rem,9vw,7rem)] font-semibold leading-[0.92] tracking-[-0.045em]"
+          >
+            {/* the name rises out of a mask: one line, not letter by letter */}
+            <span className="-mb-[0.12em] block overflow-hidden pb-[0.12em]">
+              <span className="block animate-rise">{personalInfo.shortName}</span>
             </span>
+          </h1>
+          <p className="mt-6 animate-fade-up text-[clamp(1.5rem,2.6vw,2.125rem)] font-medium [animation-delay:180ms] leading-tight tracking-[-0.02em]">
+            {personalInfo.role[language]}
+          </p>
+          <p className="mt-6 max-w-[36rem] animate-fade-up text-body text-muted [animation-delay:260ms] md:text-lead">{personalInfo.intro[language]}</p>
+
+          <div className="mt-10 flex animate-fade-up flex-col gap-3 [animation-delay:340ms] sm:flex-row sm:flex-wrap sm:items-center">
+            <a href="#work" className="btn-primary group justify-between sm:justify-start">
+              {en ? 'Read the case studies' : 'Ver los casos de estudio'}
+              <span aria-hidden="true" className="nudge nudge-down">↓</span>
+            </a>
+            <a
+              href={personalInfo.resumePath}
+              download="Ivan-Cabeza-CV.pdf"
+              className="btn-secondary group justify-between sm:justify-start"
+            >
+              {en ? 'Download CV' : 'Descargar CV'}
+              <span className="font-mono text-meta opacity-70">PDF</span>
+            </a>
           </div>
-
-          <h2 className="max-w-3xl text-xl font-bold tracking-tight text-zinc-800 sm:text-2xl lg:text-3xl dark:text-zinc-200">
-            <span className="bg-gradient-to-r from-cyan-500 via-indigo-500 to-indigo-600 bg-clip-text text-transparent">
-              {personalInfo.title[language]}
-            </span>
-            <span className="block text-base font-medium text-zinc-600 sm:text-lg dark:text-zinc-400 mt-1">
-              (Node.js • NestJS • React • Next.js • AWS)
-            </span>
-          </h2>
-
-          <p className="max-w-2xl text-sm leading-relaxed text-zinc-600 sm:text-base dark:text-zinc-400">
-            {personalInfo.bio[language]}
+          <p className="mt-6 animate-fade-up text-body text-muted [animation-delay:400ms]">
+            {en ? 'Or write to ' : 'O escríbeme a '}
+            <a href={`mailto:${personalInfo.email}`} className="link">
+              {personalInfo.email}
+            </a>
           </p>
         </div>
 
-        {/* Action Buttons (CTAs) */}
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <a
-            href="#projects"
-            className="inline-flex items-center gap-2 rounded-lg bg-cyan-600 px-5 py-2.5 text-xs font-semibold text-white shadow-sm transition hover:bg-cyan-500 hover:shadow-cyan-500/25 sm:text-sm"
-          >
-            <span>{language === 'en' ? 'Explore Projects' : 'Explorar Proyectos'}</span>
-            <ArrowDown className="h-4 w-4" />
-          </a>
-
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-5 py-2.5 text-xs font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-          >
-            <Mail className="h-4 w-4 text-cyan-500" />
-            <span>{language === 'en' ? 'Get in Touch' : 'Contactar'}</span>
-          </a>
-
-          <a
-            href={personalInfo.resumePath}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2.5 text-xs font-semibold text-zinc-800 shadow-sm transition hover:bg-zinc-50 sm:text-sm dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
-          >
-            <FileDown className="h-4 w-4 text-indigo-500" />
-            <span>{language === 'en' ? 'Download CV' : 'Descargar CV'}</span>
-          </a>
-
-          {/* Social Profiles */}
-          <div className="flex items-center gap-2 border-l border-zinc-200 pl-3 dark:border-zinc-800">
-            <a
-              href={personalInfo.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-zinc-200 bg-white p-2.5 text-zinc-600 transition hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              aria-label="GitHub Profile"
-            >
-              <Github className="h-4 w-4" />
-            </a>
-            <a
-              href={personalInfo.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-lg border border-zinc-200 bg-white p-2.5 text-zinc-600 transition hover:text-zinc-900 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
-              aria-label="LinkedIn Profile"
-            >
-              <Linkedin className="h-4 w-4 text-[#0A66C2]" />
-            </a>
-          </div>
-        </div>
-
-        {/* Quick Highlights Strip */}
-        <div className="mt-10 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-zinc-500 dark:text-zinc-400">
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck className="h-4 w-4 text-emerald-500" />
-            <span>{language === 'en' ? 'Verified Work Authorization' : 'Autorización Laboral Verificada'}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-mono font-semibold text-cyan-600 dark:text-cyan-400">B2+ English</span>
-            <span>{language === 'en' ? 'Professional Working Proficiency' : 'Nivel de Trabajo Profesional'}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-zinc-400" />
-            <span>Cartagena, Colombia (UTC-5 / EST Timezone Compatible)</span>
-          </div>
-        </div>
+        {/* Spec sheet: the screening answers, readable in five seconds */}
+        <aside
+          aria-label={en ? 'At a glance' : 'En resumen'}
+          className="col-span-4 self-end md:col-span-8 lg:col-span-5 lg:col-start-8 xl:col-span-4 xl:col-start-9"
+        >
+          {/* Portrait: B&W so it sits with the palette; 4:5, ~8–15 KB WebP with JPEG fallback */}
+          <figure className="mb-8 w-48 animate-fade-up overflow-hidden bg-surface [animation-delay:300ms] sm:w-56">
+            <picture>
+              <source
+                type="image/webp"
+                srcSet="/images/ivan-cabeza-480.webp 480w, /images/ivan-cabeza-800.webp 800w"
+                sizes="(min-width: 640px) 224px, 192px"
+              />
+              <img
+                src="/images/ivan-cabeza-480.jpg"
+                srcSet="/images/ivan-cabeza-480.jpg 480w, /images/ivan-cabeza-800.jpg 800w"
+                sizes="(min-width: 640px) 224px, 192px"
+                width={480}
+                height={600}
+                alt={en ? 'Portrait of Ivan Cabeza' : 'Retrato de Iván Cabeza'}
+                {...{ fetchpriority: 'high' } /* React 18 only accepts the lowercase DOM attribute */}
+                decoding="async"
+                className="block h-auto w-full"
+              />
+            </picture>
+          </figure>
+          <p className="label flex animate-fade-up items-center gap-2 border-b border-ink pb-3 text-ink [animation-delay:420ms]">
+            <span aria-hidden="true" className="h-2 w-2 animate-blink bg-accent" />
+            {en ? 'Available for new work' : 'Disponible para nuevos proyectos'}
+          </p>
+          <dl>
+            {/* rows print in like a log */}
+            {facts.map(([k, v], i) => (
+              <div
+                key={k}
+                className="grid animate-fade-up grid-cols-[6.75rem_1fr] gap-4 border-b border-rule py-3"
+                style={{ animationDelay: `${500 + i * 70}ms` }}
+              >
+                <dt className="label pt-[3px]">{k}</dt>
+                <dd className="text-body leading-snug">{v}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
       </div>
     </section>
   );

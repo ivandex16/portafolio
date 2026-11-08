@@ -1,77 +1,46 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { educationData, languagesData } from '../data/content';
-import { GraduationCap, Award, Globe2, CheckCircle2 } from './Icons';
+import { Section } from './Section';
+import { Reveal } from './Reveal';
 
 export const Education: React.FC = () => {
   const { language } = useLanguage();
+  const en = language === 'en';
 
   return (
-    <section id="education" className="border-t border-zinc-200/80 bg-zinc-50/50 py-16 md:py-24 transition-colors dark:border-zinc-800/80 dark:bg-zinc-900/20">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6">
-        {/* Section Header */}
-        <div className="flex flex-col space-y-2">
-          <span className="font-mono text-xs font-bold uppercase tracking-wider text-cyan-500">
-            {language === 'en' ? 'Credentials' : 'Credenciales'}
-          </span>
-          <h2 className="text-2xl font-extrabold tracking-tight text-zinc-900 sm:text-3xl dark:text-zinc-100">
-            {language === 'en' ? 'Education, Certifications & Languages' : 'Educación, Certificaciones e Idiomas'}
-          </h2>
-        </div>
-
-        {/* Education & Certs Grid */}
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {educationData.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex flex-col justify-between rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
-            >
+    <Section id="education" index="04" label={en ? 'Background' : 'Formación'} title={en ? 'Education and languages' : 'Formación e idiomas'}>
+      <div className="page-grid gap-y-14">
+        <ol className="col-span-4 md:col-span-12 lg:col-span-8">
+          {educationData.map((item, i) => (
+            <Reveal as="li" key={item.title.en} delay={i * 80} className="grid gap-x-8 gap-y-1 border-t border-rule py-6 sm:grid-cols-[10.5rem_1fr]">
+              <p className="label whitespace-nowrap pt-1">{item.period[language]}</p>
               <div>
-                <div className="flex items-center gap-2 text-cyan-500">
-                  {idx === 0 ? <GraduationCap className="h-4 w-4" /> : <Award className="h-4 w-4 text-indigo-500" />}
-                  <span className="font-mono text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
-                    {item.period}
-                  </span>
-                </div>
-                <h3 className="mt-2 text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  {item.title[language]}
-                </h3>
-                <p className="mt-1 text-xs font-semibold text-zinc-700 dark:text-zinc-300">
-                  {item.institution}
-                </p>
-                <p className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
-                  {item.details[language]}
-                </p>
+                <h3 className="text-lead font-medium">{item.title[language]}</h3>
+                <p className="text-body text-muted">{item.institution[language]}</p>
+                <p className="mt-3 max-w-prose text-body">{item.details[language]}</p>
+                {item.verify && (
+                  <a href={item.verify} target="_blank" rel="noopener noreferrer" className="link mt-3 inline-block text-body">
+                    {en ? 'Verify certificate' : 'Verificar certificado'} <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </div>
-            </div>
+            </Reveal>
           ))}
-        </div>
+        </ol>
 
-        {/* Languages Banner */}
-        <div className="mt-8 rounded-xl border border-zinc-200 bg-white p-5 shadow-sm dark:border-zinc-800 dark:bg-zinc-900">
-          <div className="flex items-center gap-2 border-b border-zinc-100 pb-3 dark:border-zinc-800">
-            <Globe2 className="h-4 w-4 text-cyan-500" />
-            <h3 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-              {language === 'en' ? 'Language Proficiencies' : 'Dominio de Idiomas'}
-            </h3>
-          </div>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {languagesData.map((lang, idx) => (
-              <div key={idx} className="flex items-center gap-3 rounded-lg border border-zinc-100 bg-zinc-50/50 p-3 dark:border-zinc-800/80 dark:bg-zinc-950/60">
-                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-                <div>
-                  <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                    {lang.name[language]}:
-                  </span>
-                  <span className="ml-1.5 text-xs text-zinc-600 dark:text-zinc-400">
-                    {lang.level[language]}
-                  </span>
-                </div>
+        <Reveal delay={160} className="col-span-4 md:col-span-6 lg:col-span-3 lg:col-start-10">
+          <h3 className="label border-t border-ink pt-6 text-ink">{en ? 'Languages' : 'Idiomas'}</h3>
+          <dl className="mt-4 space-y-4">
+            {languagesData.map(l => (
+              <div key={l.name.en}>
+                <dt className="text-lead font-medium">{l.name[language]}</dt>
+                <dd className="text-body text-muted">{l.level[language]}</dd>
               </div>
             ))}
-          </div>
-        </div>
+          </dl>
+        </Reveal>
       </div>
-    </section>
+    </Section>
   );
 };

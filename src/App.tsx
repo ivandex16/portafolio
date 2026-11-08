@@ -1,38 +1,45 @@
 import React from 'react';
 import { ThemeProvider } from './context/ThemeContext';
-import { LanguageProvider } from './context/LanguageContext';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { MetricsStrip } from './components/MetricsStrip';
-import { Experience } from './components/Experience';
 import { Projects } from './components/Projects';
+import { Experience } from './components/Experience';
 import { TechStack } from './components/TechStack';
 import { Education } from './components/Education';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 
-export const App: React.FC = () => {
+const SkipLink: React.FC = () => {
+  const { language } = useLanguage();
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <div className="min-h-screen bg-white text-zinc-900 transition-colors duration-200 dark:bg-zinc-950 dark:text-zinc-100 flex flex-col justify-between">
-          <div>
-            <Navbar />
-            <main>
-              <Hero />
-              <MetricsStrip />
-              <Experience />
-              <Projects />
-              <TechStack />
-              <Education />
-              <Contact />
-            </main>
-          </div>
-          <Footer />
-        </div>
-      </LanguageProvider>
-    </ThemeProvider>
+    <a
+      href="#main"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:text-paper"
+    >
+      {language === 'en' ? 'Skip to content' : 'Saltar al contenido'}
+    </a>
   );
 };
+
+export const App: React.FC = () => (
+  <ThemeProvider>
+    <LanguageProvider>
+      <div className="flex min-h-screen flex-col bg-paper text-ink">
+        <SkipLink />
+        <Navbar />
+        <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">
+          <Hero />
+          <Projects />
+          <Experience />
+          <TechStack />
+          <Education />
+          <Contact />
+        </main>
+        <Footer />
+      </div>
+    </LanguageProvider>
+  </ThemeProvider>
+);
 
 export default App;

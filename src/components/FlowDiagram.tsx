@@ -28,7 +28,7 @@ const Stop: React.FC<{ state: StopState }> = ({ state }) =>
   ) : (
     <span
       aria-hidden="true"
-      className={`relative block h-2.5 w-2.5 border transition-[background-color,border-color,transform] duration-300 ease-out ${stopClass[state]}`}
+      className={`relative block h-2.5 w-2.5 rounded-full border transition-[background-color,border-color,transform] duration-300 ease-out ${stopClass[state]}`}
     />
   );
 

@@ -13,25 +13,31 @@ export const TechStack: React.FC = () => {
       id="stack"
       index="03"
       label="Stack"
-      title={en ? 'Tools, ordered by how often I use them' : 'Herramientas, por frecuencia de uso'}
+      title={en ? 'Tools, ordered by how often I use them.' : 'Herramientas, por frecuencia de uso.'}
     >
-      <dl className="border-t border-rule">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {techStackData.map((cat, i) => (
-          <Reveal key={cat.title.en} delay={i * 70} className="page-grid gap-y-2 border-b border-rule py-6 md:py-7">
-            <dt className="col-span-4 md:col-span-3">
-              <span className={`block text-lead font-medium ${i === 0 ? 'text-accent' : ''}`}>{cat.title[language]}</span>
-              <span className="label mt-1 block">{cat.note[language]}</span>
-            </dt>
-            <dd className="col-span-4 md:col-span-9">
-              <ul className={`flex flex-wrap gap-x-6 gap-y-2 ${i === 0 ? 'text-lead text-ink' : 'text-body text-ink'} md:pt-[2px]`}>
-                {cat.skills.map(s => (
-                  <li key={s}>{s}</li>
-                ))}
-              </ul>
-            </dd>
+          <Reveal
+            key={cat.title.en}
+            delay={(i % 3) * 80}
+            className={`rounded-3xl border border-rule bg-surface p-6 md:p-8 ${i === 0 ? 'md:col-span-2 lg:col-span-3' : ''}`}
+          >
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className={`text-xl font-semibold tracking-[-0.02em] ${i === 0 ? 'text-accent' : ''}`}>
+                {cat.title[language]}
+              </h3>
+              <p className="label">{cat.note[language]}</p>
+            </div>
+            <ul className="mt-5 flex flex-wrap gap-2">
+              {cat.skills.map(s => (
+                <li key={s} className={i === 0 ? 'chip text-sm' : 'rounded-full bg-raised px-3 py-1.5 text-sm'}>
+                  {s}
+                </li>
+              ))}
+            </ul>
           </Reveal>
         ))}
-      </dl>
+      </div>
     </Section>
   );
 };

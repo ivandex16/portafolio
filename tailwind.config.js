@@ -10,6 +10,8 @@ export default {
         ink: 'var(--ink)',
         muted: 'var(--muted)',
         rule: 'var(--rule)',
+        'rule-strong': 'var(--rule-strong)',
+        raised: 'var(--raised)',
         accent: {
           DEFAULT: 'var(--accent)',
           hover: 'var(--accent-hover)',
@@ -17,17 +19,17 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['"IBM Plex Sans"', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
+        sans: ['"Geist Variable"', 'Geist', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        mono: ['"Geist Mono Variable"', 'ui-monospace', 'SFMono-Regular', 'Consolas', 'monospace'],
       },
       fontSize: {
         // Type scale (1.25 minor third, body 17px). Display sizes use clamp() in components.
-        meta: ['0.875rem', { lineHeight: '1.4' }],
-        body: ['1.0625rem', { lineHeight: '1.65' }],
-        lead: ['1.25rem', { lineHeight: '1.55' }],
+        meta: ['0.75rem', { lineHeight: '1rem' }],
+        body: ['1rem', { lineHeight: '1.6' }],
+        lead: ['1.125rem', { lineHeight: '1.75rem' }],
       },
       maxWidth: {
-        page: '76rem',
+        page: '84rem',
         prose: '38rem',
       },
       keyframes: {
@@ -56,12 +58,13 @@ export default {
       animation: {
         commit: 'commit 700ms ease-out 1',
         shake: 'shake 280ms ease-in-out 2',
-        rise: 'rise 800ms cubic-bezier(0.2, 0.7, 0.2, 1) both',
+        rise: 'rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both',
         blink: 'blink 1.1s steps(1, end) 1.4s 3',
-        'fade-up': 'fade-up 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both',
+        'fade-up': 'fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both',
       },
       transitionTimingFunction: {
         out: 'cubic-bezier(0.2, 0.7, 0.2, 1)',
+        'out-expo': 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

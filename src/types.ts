@@ -42,10 +42,22 @@ export interface Project {
     height: number;
     alt: Localized;
   };
+  /**
+   * Product screenshots shown as a stacked carousel. `src` is the path without the width suffix:
+   * the files are `<src>-640.webp` and `<src>-1280.webp` (16:10 crop from the top works best).
+   */
+  screens?: {
+    src: string;
+    title: Localized;
+    desc: Localized;
+    alt: Localized;
+  }[];
   pipeline: Pipeline;
   /** 'wide' = full-width horizontal diagram; 'split' = text and vertical diagram side by side */
   layout: 'wide' | 'split';
 }
+
+export type Achievement = string | { text: string; caseId: string };
 
 export interface ExperienceItem {
   company: string;
@@ -55,7 +67,8 @@ export interface ExperienceItem {
   summary: Localized;
   /** A number ("50,000+") or a localized word ("Thousands" / "Miles") */
   highlights: { value: string | Localized; label: Localized }[];
-  achievements: Localized<string[]>;
+  /** A plain line, or one that points to its case study further down the page */
+  achievements: Localized<Achievement[]>;
   tech: string[];
 }
 

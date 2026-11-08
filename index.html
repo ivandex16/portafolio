@@ -27,15 +27,14 @@
     <meta property="twitter:description" content="APIs, transactional data layers and Next.js front ends. 4+ years in production TypeScript." />
     <meta property="twitter:image" content="https://ivancbgz.vercel.app/og-image.png" />
 
-    <meta name="theme-color" content="#f4f3ef" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0f0f0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#0a0b0e" />
 
-    <!-- Apply saved / system theme before first paint to avoid a flash -->
+    <!-- Apply the saved theme (dark by default) before first paint to avoid a flash -->
     <script>
       (function () {
         try {
           var t = localStorage.getItem('portfolio_theme');
-          if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          if (t !== 'light' && t !== 'dark') t = 'dark';
           if (t === 'dark') document.documentElement.classList.add('dark');
         } catch (e) {}
       })();

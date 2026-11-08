@@ -5,50 +5,19 @@ import { Project } from '../types';
 import { Section } from './Section';
 import { Reveal } from './Reveal';
 import { FlowDiagram } from './FlowDiagram';
-import { CountUp, ShrinkBar, parseBeforeAfter } from './CountUp';
+import { ScreenStack } from './ScreenStack';
+import { CountUp } from './CountUp';
+import { ArrowUpRight, GithubLogo } from './PhosphorIcons';
 
 /** A GitHub URL with only one path segment is a profile, not a repository. Label it honestly. */
 const isProfileUrl = (url: string) => new URL(url).pathname.split('/').filter(Boolean).length < 2;
 
-const Block: React.FC<{ title: string; children: React.ReactNode; className?: string }> = ({
-  title,
-  children,
-  className = '',
-}) => (
-  <div className={className}>
-    <h4 className="label mb-3 text-ink">{title}</h4>
-    <div className="text-body">{children}</div>
+const Block: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
+  <div>
+    <h4 className="label mb-3">{title}</h4>
+    <div className="text-base text-ink">{children}</div>
   </div>
 );
-
-const Decisions: React.FC<{ items: string[] }> = ({ items }) => (
-  <ol className="space-y-4">
-    {items.map((d, i) => (
-      <li key={d} className="grid grid-cols-[1.75rem_1fr]">
-        <span className="label pt-[3px]">{String.fromCharCode(97 + i)}.</span>
-        <span>{d}</span>
-      </li>
-    ))}
-  </ol>
-);
-
-const Result: React.FC<{ project: Project }> = ({ project }) => {
-  const { language } = useLanguage();
-  const { metric, label } = project.result;
-  return (
-    <div className="border-l-2 border-accent pl-5">
-      {metric && (
-        <p className="font-mono text-[clamp(1.5rem,2.4vw,2rem)] leading-tight tracking-[-0.02em] text-ink tabular-nums">
-          <CountUp value={metric} />
-        </p>
-      )}
-      {metric && parseBeforeAfter(metric) && (
-        <ShrinkBar ratio={parseBeforeAfter(metric)!.ratio} label={label[language]} />
-      )}
-      <p className={metric ? 'mt-2 text-body text-muted' : 'text-lead text-ink'}>{label[language]}</p>
-    </div>
-  );
-};
 
 const Links: React.FC<{ project: Project }> = ({ project }) => {
   const { language } = useLanguage();
@@ -57,33 +26,42 @@ const Links: React.FC<{ project: Project }> = ({ project }) => {
 
   if (links?.isNDA) {
     return (
-      <p className="text-muted">
-        {en ? 'Code under NDA. Happy to walk through the design in an interview.' : 'Código bajo NDA. Puedo explicar el diseño en una entrevista.'}
+      <p className="max-w-[28rem] text-sm text-muted">
+        {en
+          ? 'Code under NDA. Happy to walk through the design in an interview.'
+          : 'Código bajo NDA. Puedo explicar el diseño en una entrevista.'}
       </p>
     );
   }
   if (!links?.demo && !links?.github) return null;
 
   return (
-    <ul className="flex flex-wrap gap-x-6 gap-y-2">
+    <div className="flex flex-wrap gap-3">
       {links.demo && (
-        <li>
-          <a href={links.demo} target="_blank" rel="noopener noreferrer" className="link">
-            {en ? 'Live demo' : 'Demo en vivo'} <span aria-hidden="true">↗</span>
-          </a>
-        </li>
+        <a
+          href={links.demo}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex min-h-11 items-center gap-2 rounded-xl bg-ink px-4 text-sm font-semibold text-paper transition-transform duration-300 ease-out-expo active:scale-[0.98]"
+        >
+          {en ? 'Live demo' : 'Ver demo en vivo'}
+          <ArrowUpRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </a>
       )}
       {links.github && (
-        <li>
-          <a href={links.github} target="_blank" rel="noopener noreferrer" className="link">
-            {isProfileUrl(links.github)
-              ? en ? 'GitHub profile' : 'Perfil de GitHub'
-              : en ? 'Source on GitHub' : 'Código en GitHub'}{' '}
-            <span aria-hidden="true">↗</span>
-          </a>
-        </li>
+        <a
+          href={links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-rule-strong px-4 text-sm font-semibold text-ink transition-[transform,border-color] duration-300 ease-out-expo hover:border-ink active:scale-[0.98]"
+        >
+          <GithubLogo aria-hidden="true" className="h-4 w-4" />
+          {isProfileUrl(links.github)
+            ? en ? 'GitHub profile' : 'Perfil de GitHub'
+            : en ? 'Source on GitHub' : 'Código en GitHub'}
+        </a>
       )}
-    </ul>
+    </div>
   );
 };
 
@@ -91,111 +69,90 @@ const CaseStudy: React.FC<{ project: Project; index: number }> = ({ project, ind
   const { language } = useLanguage();
   const en = language === 'en';
   const number = String(index + 1).padStart(2, '0');
-  const flipped = project.layout === 'split' && index % 2 === 0;
+  const flipped = index % 2 === 1;
   const diagramLabel = en ? `Architecture flow: ${project.title}` : `Flujo de arquitectura: ${project.title}`;
-
-  const figure = (
-    <figure className="bg-surface p-5 md:p-8">
-      {project.media && (
-        <img
-          src={project.media.src}
-          width={project.media.width}
-          height={project.media.height}
-          alt={project.media.alt[language]}
-          loading="lazy"
-          decoding="async"
-          className="mb-8 h-auto w-full border border-rule"
-        />
-      )}
-      <FlowDiagram pipeline={project.pipeline} label={diagramLabel} wide={project.layout === 'wide'} />
-      <figcaption className="label mt-6 border-t border-rule pt-4">{project.pipeline.caption[language]}</figcaption>
-    </figure>
-  );
-
-  const footer = (
-    <Reveal as="dl" className="page-grid mt-12 gap-y-6 border-t border-rule pt-6 text-body">
-      <div className="col-span-4 md:col-span-4">
-        <dt className="label mb-1">{en ? 'My role' : 'Mi rol'}</dt>
-        <dd>{project.role[language]}</dd>
-      </div>
-      <div className="col-span-4 md:col-span-4">
-        <dt className="label mb-1">Stack</dt>
-        <dd>{project.tech.join(', ')}</dd>
-      </div>
-      <div className="col-span-4 md:col-span-4">
-        <dt className="label mb-1">{en ? 'Links' : 'Enlaces'}</dt>
-        <dd>
-          <Links project={project} />
-        </dd>
-      </div>
-    </Reveal>
-  );
+  const { metric, label } = project.result;
 
   return (
-    <article aria-labelledby={`${project.id}-title`} className="border-t border-rule pt-8 first:border-t-0 first:pt-0">
-      <Reveal>
-      <p className="label">
-        <span className="text-ink">{en ? `Case ${number}` : `Caso ${number}`}</span>
-        <span aria-hidden="true" className="mx-2">·</span>
-        {project.context[language]}
-      </p>
-
-      <div className="page-grid mt-5 gap-y-8">
-        <h3
-          id={`${project.id}-title`}
-          className="col-span-4 text-[clamp(1.75rem,3.4vw,2.75rem)] font-medium leading-[1.08] tracking-[-0.025em] md:col-span-7"
-        >
-          {project.title}
-        </h3>
-        <div className="col-span-4 md:col-span-5 md:col-start-8 md:pt-2">
-          <Result project={project} />
+    <Reveal as="article" aria-labelledby={`${project.id}-title`} className="card overflow-hidden">
+      {/* Summary and architecture side by side */}
+      <div className={`flex flex-wrap ${flipped ? 'lg:flex-row-reverse' : ''}`}>
+        <div className="flex min-w-0 flex-[999_1_28rem] flex-col gap-6 p-7 md:p-12 lg:p-14">
+          <p className="label flex flex-wrap gap-x-2 gap-y-1">
+            <span className="text-ink">{en ? `Case ${number}` : `Caso ${number}`}</span>
+            <span aria-hidden="true">·</span>
+            <span>{project.context[language]}</span>
+          </p>
+          <h3
+            id={`${project.id}-title`}
+            className="text-[clamp(1.875rem,3.4vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.035em]"
+          >
+            {project.title}
+          </h3>
+          {metric && (
+            <p className="text-4xl font-semibold tracking-[-0.03em] text-accent tabular-nums">
+              <CountUp value={metric} />
+            </p>
+          )}
+          <p className="max-w-[34rem] text-lg text-ink">{label[language]}</p>
+          <div className="mt-auto rounded-2xl border border-rule bg-paper p-5">
+            <p className="label mb-2">{en ? 'My role' : 'Mi rol'}</p>
+            <p className="text-sm text-ink">{project.role[language]}</p>
+          </div>
         </div>
-      </div>
-      </Reveal>
 
-      {project.layout === 'wide' ? (
-        <>
-          <Reveal className="mt-12" delay={80}>{figure}</Reveal>
-          <Reveal className="page-grid mt-12 gap-y-10">
-            <Block title={en ? 'Problem' : 'Problema'} className="col-span-4 md:col-span-6 lg:col-span-4">
-              {project.problem[language]}
-            </Block>
-            <Block title={en ? 'Approach' : 'Solución'} className="col-span-4 md:col-span-6 lg:col-span-4">
-              {project.solution[language]}
-            </Block>
-            {project.decisions && (
-              <Block title={en ? 'Key decisions' : 'Decisiones clave'} className="col-span-4 md:col-span-12 lg:col-span-4">
-                <Decisions items={project.decisions[language]} />
-              </Block>
-            )}
-          </Reveal>
-        </>
-      ) : (
-        <div className="page-grid mt-12 gap-y-10">
-          <Reveal
-            className={`col-span-4 space-y-10 md:col-span-6 lg:col-span-6 ${
-              flipped ? 'md:order-2 md:col-start-7 lg:col-start-7' : ''
-            }`}
-          >
-            <Block title={en ? 'Problem' : 'Problema'}>{project.problem[language]}</Block>
-            <Block title={en ? 'Approach' : 'Solución'}>{project.solution[language]}</Block>
-            {project.decisions && (
-              <Block title={en ? 'Key decisions' : 'Decisiones clave'}>
-                <Decisions items={project.decisions[language]} />
-              </Block>
-            )}
-          </Reveal>
-          <Reveal
-            delay={120}
-            className={`col-span-4 md:col-span-6 lg:col-span-5 ${flipped ? 'md:order-1 lg:col-start-1' : 'lg:col-start-8'}`}
-          >
-            {figure}
-          </Reveal>
+        <figure
+          className={`grid-bg min-w-0 flex-[1_1_22rem] border-rule bg-paper p-7 md:p-12 lg:p-14 ${
+            flipped ? 'border-b lg:border-b-0 lg:border-r' : 'border-t lg:border-l lg:border-t-0'
+          }`}
+        >
+          <figcaption className="label mb-6">{project.pipeline.caption[language]}</figcaption>
+          <FlowDiagram pipeline={project.pipeline} label={diagramLabel} />
+        </figure>
+      </div>
+
+      {/* Problem, approach and decisions */}
+      <div className="grid gap-10 border-t border-rule p-7 md:grid-cols-2 md:p-12 lg:grid-cols-3 lg:p-14">
+        <Block title={en ? 'Problem' : 'Problema'}>{project.problem[language]}</Block>
+        <Block title={en ? 'Approach' : 'Solución'}>{project.solution[language]}</Block>
+        {project.decisions && (
+          <Block title={en ? 'Key decisions' : 'Decisiones clave'}>
+            <ol className="space-y-4">
+              {project.decisions[language].map((d, i) => (
+                <li key={d} className="grid grid-cols-[1.75rem_1fr]">
+                  <span className="font-mono text-xs text-accent pt-1">{String(i + 1).padStart(2, '0')}</span>
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ol>
+          </Block>
+        )}
+      </div>
+
+      {project.screens && project.screens.length > 0 && (
+        <div className="relative overflow-hidden border-t border-rule bg-paper p-7 md:p-12 lg:p-14">
+          <div aria-hidden="true" className="glow -bottom-56 -right-32 h-[26rem] w-[40rem] !opacity-[0.08]" />
+          <div className="relative">
+            <ScreenStack
+              screens={project.screens}
+              label={en ? `Screenshots: ${project.title}` : `Capturas: ${project.title}`}
+            />
+          </div>
         </div>
       )}
 
-      {footer}
-    </article>
+      {/* Stack and links */}
+      <div className="flex flex-wrap items-center justify-between gap-6 border-t border-rule p-7 md:px-12 lg:px-14">
+        <ul className="flex flex-wrap gap-2" aria-label="Stack">
+          {project.tech.map(t => (
+            <li key={t} className="rounded-full bg-raised px-3 py-1.5 font-mono text-xs text-ink">
+              {t}
+            </li>
+          ))}
+        </ul>
+        <Links project={project} />
+      </div>
+    </Reveal>
   );
 };
 
@@ -207,15 +164,15 @@ export const Projects: React.FC = () => {
     <Section
       id="work"
       index="01"
-      label={en ? 'Work' : 'Proyectos'}
-      title={en ? 'Selected systems, written up as case studies' : 'Sistemas seleccionados, contados como casos de estudio'}
+      label={en ? 'Selected work' : 'Trabajo seleccionado'}
+      title={en ? 'Real systems, written up as case studies.' : 'Sistemas reales, contados como casos de estudio.'}
       intro={
         en
-          ? 'Roughly how I’d explain them in a technical interview: what was going wrong, what I chose and why, and what changed.'
-          : 'Más o menos como los explicaría en una entrevista técnica: qué fallaba, qué decidí y por qué, y qué cambió.'
+          ? 'Problem, decisions and result, the way I’d explain them in a technical interview. No made-up metrics.'
+          : 'Problema, decisiones y resultado, como los explicaría en una entrevista técnica. Sin métricas inventadas.'
       }
     >
-      <div className="space-y-24 md:space-y-36">
+      <div className="space-y-8 md:space-y-10">
         {projectsData.map((p, i) => (
           <CaseStudy key={p.id} project={p} index={i} />
         ))}

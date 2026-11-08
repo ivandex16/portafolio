@@ -1,5 +1,5 @@
 import React from 'react';
-import { useInView } from '../hooks/motion';
+import { Reveal } from './Reveal';
 
 interface SectionProps {
   id: string;
@@ -12,42 +12,29 @@ interface SectionProps {
 }
 
 /**
- * Every section shares the same skeleton: a 3-column rail with the index and a short label,
- * the heading in the remaining 9 columns, then content on the full 12-column grid.
+ * Every section shares the same header: an accent mono index ("01 — WORK"), a large heading,
+ * and an optional short intro that sits to the right of the heading on wide screens.
  */
-export const Section: React.FC<SectionProps> = ({ id, index, label, title, intro, children, className = '' }) => {
-  const [ref, inView] = useInView<HTMLElement>(0.1);
-  return (
-    <section id={id} aria-labelledby={`${id}-title`} className={`mx-auto max-w-page px-5 py-16 md:px-8 md:py-24 ${className}`}>
-      <header ref={ref} className="page-grid relative pt-5">
-        {/* top rule draws from the left the first time the section enters the screen */}
-        <span
-          aria-hidden="true"
-          className={`rule-draw absolute inset-x-0 top-0 h-px bg-ink ${inView ? 'is-drawn' : ''}`}
-        />
-        <p
-          className={`reveal label col-span-4 md:col-span-3 ${inView ? 'is-in' : ''}`}
-          style={{ transitionDelay: '150ms' }}
-          aria-hidden="true"
-        >
-          <span className="text-accent">{index}</span>
-          <span className="mx-2">/</span>
-          {label}
+export const Section: React.FC<SectionProps> = ({ id, index, label, title, intro, children, className = '' }) => (
+  <section id={id} aria-labelledby={`${id}-title`} className={`page py-20 md:py-32 ${className}`}>
+    <header className="flex flex-wrap items-end justify-between gap-6">
+      <Reveal className="min-w-0 max-w-[48rem]">
+        <p className="label text-accent" aria-hidden="true">
+          {index} — {label}
         </p>
-        <div
-          className={`reveal col-span-4 mt-6 md:col-span-9 md:mt-0 ${inView ? 'is-in' : ''}`}
-          style={{ transitionDelay: '250ms' }}
+        <h2
+          id={`${id}-title`}
+          className="mt-4 text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-none tracking-[-0.04em]"
         >
-          <h2
-            id={`${id}-title`}
-            className="max-w-[22ch] text-[clamp(2rem,4.2vw,3.25rem)] font-medium leading-[1.08] tracking-[-0.025em]"
-          >
-            {title}
-          </h2>
-          {intro && <p className="mt-5 max-w-prose text-lead text-muted">{intro}</p>}
-        </div>
-      </header>
-      <div className="mt-14 md:mt-20">{children}</div>
-    </section>
-  );
-};
+          {title}
+        </h2>
+      </Reveal>
+      {intro && (
+        <Reveal as="p" delay={120} className="max-w-[24rem] text-base text-muted">
+          {intro}
+        </Reveal>
+      )}
+    </header>
+    <div className="mt-12 md:mt-16">{children}</div>
+  </section>
+);

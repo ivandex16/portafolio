@@ -3,25 +3,42 @@ import { useLanguage } from '../context/LanguageContext';
 import { educationData, languagesData } from '../data/content';
 import { Section } from './Section';
 import { Reveal } from './Reveal';
+import { ArrowUpRight } from './PhosphorIcons';
 
 export const Education: React.FC = () => {
   const { language } = useLanguage();
   const en = language === 'en';
 
   return (
-    <Section id="education" index="04" label={en ? 'Background' : 'Formación'} title={en ? 'Education and languages' : 'Formación e idiomas'}>
-      <div className="page-grid gap-y-14">
-        <ol className="col-span-4 md:col-span-12 lg:col-span-8">
+    <Section
+      id="education"
+      index="04"
+      label={en ? 'Background' : 'Formación'}
+      title={en ? 'Education and languages.' : 'Formación e idiomas.'}
+    >
+      <div className="flex flex-wrap gap-4">
+        <ol className="grid min-w-0 flex-[999_1_36rem] gap-4">
           {educationData.map((item, i) => (
-            <Reveal as="li" key={item.title.en} delay={i * 80} className="grid gap-x-8 gap-y-1 border-t border-rule py-6 sm:grid-cols-[10.5rem_1fr]">
-              <p className="label whitespace-nowrap pt-1">{item.period[language]}</p>
+            <Reveal
+              as="li"
+              key={item.title.en}
+              delay={i * 80}
+              className="grid gap-x-8 gap-y-2 rounded-3xl border border-rule bg-surface p-6 sm:grid-cols-[10rem_1fr] md:p-8"
+            >
+              <p className="whitespace-nowrap pt-1 font-mono text-xs text-muted">{item.period[language]}</p>
               <div>
-                <h3 className="text-lead font-medium">{item.title[language]}</h3>
-                <p className="text-body text-muted">{item.institution[language]}</p>
-                <p className="mt-3 max-w-prose text-body">{item.details[language]}</p>
+                <h3 className="text-lg font-semibold tracking-[-0.01em]">{item.title[language]}</h3>
+                <p className="text-sm text-muted">{item.institution[language]}</p>
+                <p className="mt-3 max-w-[40rem] text-base">{item.details[language]}</p>
                 {item.verify && (
-                  <a href={item.verify} target="_blank" rel="noopener noreferrer" className="link mt-3 inline-block text-body">
-                    {en ? 'Verify certificate' : 'Verificar certificado'} <span aria-hidden="true">↗</span>
+                  <a
+                    href={item.verify}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover"
+                  >
+                    {en ? 'Verify certificate' : 'Verificar certificado'}
+                    <ArrowUpRight aria-hidden="true" className="h-4 w-4 transition-transform duration-300 ease-out-expo group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </a>
                 )}
               </div>
@@ -29,13 +46,13 @@ export const Education: React.FC = () => {
           ))}
         </ol>
 
-        <Reveal delay={160} className="col-span-4 md:col-span-6 lg:col-span-3 lg:col-start-10">
-          <h3 className="label border-t border-ink pt-6 text-ink">{en ? 'Languages' : 'Idiomas'}</h3>
-          <dl className="mt-4 space-y-4">
+        <Reveal delay={160} className="min-w-0 flex-[1_1_16rem] self-start rounded-3xl border border-rule bg-surface p-6 md:p-8">
+          <h3 className="label">{en ? 'Languages' : 'Idiomas'}</h3>
+          <dl className="mt-5 space-y-5">
             {languagesData.map(l => (
               <div key={l.name.en}>
-                <dt className="text-lead font-medium">{l.name[language]}</dt>
-                <dd className="text-body text-muted">{l.level[language]}</dd>
+                <dt className="text-lg font-semibold">{l.name[language]}</dt>
+                <dd className="text-sm text-muted">{l.level[language]}</dd>
               </div>
             ))}
           </dl>

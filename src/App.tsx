@@ -15,7 +15,7 @@ const SkipLink: React.FC = () => {
   return (
     <a
       href="#main"
-      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-ink focus:px-4 focus:py-3 focus:text-paper"
+      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-xl focus:bg-ink focus:px-4 focus:py-3 focus:text-paper"
     >
       {language === 'en' ? 'Skip to content' : 'Saltar al contenido'}
     </a>
@@ -25,7 +25,7 @@ const SkipLink: React.FC = () => {
 export const App: React.FC = () => (
   <ThemeProvider>
     <LanguageProvider>
-      <div className="flex min-h-screen flex-col bg-paper text-ink">
+      <div className="flex min-h-screen flex-col overflow-x-clip bg-paper text-ink">
         <SkipLink />
         <Navbar />
         <main id="main" tabIndex={-1} className="flex-1 focus:outline-none">

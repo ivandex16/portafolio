@@ -7,16 +7,14 @@ export const Footer: React.FC = () => {
   const en = language === 'en';
 
   return (
-    <footer className="inverse bg-paper text-muted">
-      <div className="mx-auto flex max-w-page flex-col gap-3 border-t border-rule px-5 py-8 sm:flex-row sm:items-center sm:justify-between md:px-8">
-        <p className="label">
-          © {new Date().getFullYear()} {personalInfo.name}.{' '}
-          {en ? 'Set in IBM Plex. Built with React and Tailwind CSS.' : 'Compuesto en IBM Plex. Hecho con React y Tailwind CSS.'}
-        </p>
-        <a href="#top" className="label whitespace-nowrap hover:text-ink">
-          {en ? 'Back to top ↑' : 'Volver arriba ↑'}
-        </a>
-      </div>
+    <footer className="page flex flex-col gap-3 pb-10 pt-2 font-mono text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+      <p>
+        © {new Date().getFullYear()} {personalInfo.name}.{' '}
+        {en ? 'Set in Geist. Built with React, TypeScript and Tailwind CSS.' : 'Compuesto en Geist. Hecho con React, TypeScript y Tailwind CSS.'}
+      </p>
+      <a href="#top" className="group inline-flex min-h-11 items-center gap-1 whitespace-nowrap hover:text-ink">
+        {en ? 'Back to top' : 'Volver arriba'} <span aria-hidden="true" className="nudge nudge-up">↑</span>
+      </a>
     </footer>
   );
 };

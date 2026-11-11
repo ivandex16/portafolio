@@ -136,6 +136,8 @@ const CaseStudy: React.FC<{ project: Project; index: number }> = ({ project, ind
             <ScreenStack
               screens={project.screens}
               label={en ? `Screenshots: ${project.title}` : `Capturas: ${project.title}`}
+              aspect={project.screensAspect}
+              note={project.screensNote?.[language]}
             />
           </div>
         </div>

@@ -7,6 +7,12 @@ type Screens = NonNullable<Project['screens']>;
 
 const AUTOPLAY_MS = 5000;
 
+/** "16 / 10" -> 1.6 */
+const ratio = (aspect: string) => {
+  const [w, h] = aspect.split('/').map(Number);
+  return h ? w / h : 1.6;
+};
+
 /** depth 0 = front, 1 = just behind, 2+ = at the back */
 const layer = (depth: number) => {
   const d = Math.min(depth, 2);
@@ -24,7 +30,12 @@ const layer = (depth: number) => {
  * Advances every 5 s while in view; pauses on hover or keyboard focus; no autoplay and no
  * movement with reduced motion.
  */
-export const ScreenStack: React.FC<{ screens: Screens; label: string }> = ({ screens, label }) => {
+export const ScreenStack: React.FC<{ screens: Screens; label: string; aspect?: string; note?: string }> = ({
+  screens,
+  label,
+  aspect = '16 / 10',
+  note,
+}) => {
   const { language } = useLanguage();
   const en = language === 'en';
   const reduced = useReducedMotion();
@@ -69,7 +80,10 @@ export const ScreenStack: React.FC<{ screens: Screens; label: string }> = ({ scr
       onBlur={() => setPaused(false)}
     >
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <p className="label">{en ? 'Inside the app' : 'La app por dentro'}</p>
+        <p className="label flex flex-wrap gap-x-2">
+          <span>{en ? 'Inside the app' : 'La app por dentro'}</span>
+          {note && <span className="normal-case tracking-normal">· {note}</span>}
+        </p>
         <div className="flex gap-2">
           {[
             { dir: -1, label: en ? 'Previous screen' : 'Pantalla anterior', d: 'M15 18l-6-6 6-6' },
@@ -96,7 +110,7 @@ export const ScreenStack: React.FC<{ screens: Screens; label: string }> = ({ scr
         aria-label={label}
         className="relative mx-auto mt-8 max-w-[60rem] pt-10 sm:pt-16"
       >
-        <div className="relative aspect-[16/10]">
+        <div className="relative" style={{ aspectRatio: aspect }}>
           {screens.map((s, i) => {
             const depth = (i - active + count) % count;
             const l = layer(depth);
@@ -121,7 +135,7 @@ export const ScreenStack: React.FC<{ screens: Screens; label: string }> = ({ scr
                   srcSet={`${s.src}-640.webp 640w, ${s.src}-1280.webp 1280w`}
                   sizes="(min-width: 1024px) 960px, 92vw"
                   width={1280}
-                  height={800}
+                  height={Math.round(1280 / ratio(aspect))}
                   alt={s.alt[language]}
                   loading="lazy"
                   decoding="async"

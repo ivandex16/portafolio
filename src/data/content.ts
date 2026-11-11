@@ -131,8 +131,8 @@ export const projectsData: Project[] = [
       es: 'Cuando se registraban a la vez varias facturas grandes de proveedores, las compras y el ingreso a almacén chocaban por concurrencia. El stock se descuadraba y la conciliación financiera llegaba tarde.',
     },
     solution: {
-      en: 'A transactional engine where the supplier invoice, its tax lines and the batch stock update commit together or roll back together. React handles fast multi-row entry; a Node.js service runs the ACID transaction against SQL Server.',
-      es: 'Un motor transaccional donde la factura del proveedor, sus impuestos y la actualización de stock por lotes se confirman juntos o se revierten juntos. React resuelve la captura rápida de muchas filas; un servicio en Node.js ejecuta la transacción ACID sobre SQL Server.',
+      en: 'A transactional engine where the supplier invoice, its tax lines and the batch stock update commit together or roll back together. React handles fast multi-row entry; a Node.js service runs the ACID transaction against SQL Server. The module covers the whole path: requisition, authorization or quotation request, purchase order, receipt into warehouse and batch, and the purchase record with its journal entry.',
+      es: 'Un motor transaccional donde la factura del proveedor, sus impuestos y la actualización de stock por lotes se confirman juntos o se revierten juntos. React resuelve la captura rápida de muchas filas; un servicio en Node.js ejecuta la transacción ACID sobre SQL Server. El módulo cubre todo el recorrido: requisición, autorización o solicitud de cotización, orden de compra, entrada a bodega y lote, y el registro de compra con su asiento contable.',
     },
     decisions: {
       en: [
@@ -154,6 +154,58 @@ export const projectsData: Project[] = [
     },
     tech: ['React', 'Node.js', 'Express', 'SQL Server', 'PostgreSQL', 'Docker'],
     links: { isNDA: true },
+    screensAspect: '11 / 5',
+    screensNote: {
+      en: 'Test environment · third-party details blurred',
+      es: 'Entorno de pruebas · datos de terceros difuminados',
+    },
+    screens: [
+      {
+        src: '/images/projects/compras-requisitions',
+        title: { en: 'Requisitions', es: 'Requisiciones' },
+        desc: {
+          en: 'Every purchase starts as a requisition, tracked by status: pending, authorized, partly authorized, closed, expired, finished or voided.',
+          es: 'Toda compra empieza como requisición, con seguimiento por estado: pendiente, autorizada, parcial, cerrada, vencida, terminada o anulada.',
+        },
+        alt: { en: 'Requisition list with the status panel and filters', es: 'Listado de requisiciones con el panel de estados y los filtros' },
+      },
+      {
+        src: '/images/projects/compras-order',
+        title: { en: 'Purchase order', es: 'Orden de compra' },
+        desc: {
+          en: 'VAT, discount, gross value and total per line, recalculated as quantities and prices change.',
+          es: 'IVA, descuento, valor bruto y total por línea, recalculados al cambiar cantidades y precios.',
+        },
+        alt: { en: 'New purchase order with per-line VAT and discount and the order totals', es: 'Nueva orden de compra con IVA y descuento por línea y los totales' },
+      },
+      {
+        src: '/images/projects/compras-receipt',
+        title: { en: 'Purchase receipt', es: 'Entrada de compra' },
+        desc: {
+          en: 'Each product is received into a warehouse and a batch, with the order’s totals carried over.',
+          es: 'Cada producto entra a una bodega y a un lote, con los totales de la orden.',
+        },
+        alt: { en: 'New purchase receipt with warehouse and batch per product', es: 'Nueva entrada de compra con bodega y lote por producto' },
+      },
+      {
+        src: '/images/projects/compras-ledger',
+        title: { en: 'Journal entry', es: 'Asiento contable' },
+        desc: {
+          en: 'The purchase becomes a balanced journal entry (debit equals credit), viewable under COLGAAP or IFRS.',
+          es: 'La compra genera un asiento contable cuadrado (débito igual a crédito), consultable en COLGAAP o NIIF.',
+        },
+        alt: { en: 'Journal entry for a purchase with COLGAAP and IFRS views; third-party details blurred', es: 'Asiento contable de una compra con vistas COLGAAP y NIIF; datos de terceros difuminados' },
+      },
+      {
+        src: '/images/projects/compras-roles',
+        title: { en: 'Roles and permissions', es: 'Roles y permisos' },
+        desc: {
+          en: 'Each role decides which sections and actions a user can reach.',
+          es: 'Cada rol define a qué secciones y acciones puede acceder un usuario.',
+        },
+        alt: { en: 'Roles and permissions list', es: 'Listado de roles y permisos' },
+      },
+    ],
     layout: 'wide',
     pipeline: {
       caption: {

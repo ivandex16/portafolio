@@ -52,6 +52,10 @@ export interface Project {
     desc: Localized;
     alt: Localized;
   }[];
+  /** Aspect ratio of the screenshots, as CSS (default "16 / 10"). */
+  screensAspect?: string;
+  /** Short line shown next to the carousel label, e.g. how the data was anonymized. */
+  screensNote?: Localized;
   pipeline: Pipeline;
   /** 'wide' = full-width horizontal diagram; 'split' = text and vertical diagram side by side */
   layout: 'wide' | 'split';
